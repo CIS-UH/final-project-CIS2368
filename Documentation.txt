@@ -1,0 +1,9 @@
+Initiate final project file on 10/03/2024
+10/03/2024: initiated the final project file and repository with MC - LT 
+            implemented the mysql connection and tables - LT
+            adjust mysql connection and checking on code - MC
+            connection successful [21:35] -LT 
+            created all tables - LT 
+            MYSQL CONNECTION - MC 
+10/08/2024: MC initate CRUD API's on FinalProject.py
+
