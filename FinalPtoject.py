@@ -280,6 +280,50 @@ def delete_bond():
 }
 '''
 
+'''                                    INVESTOR'S PORTFOLIO -BOND/STOCK-                                     '''
+
+#Retrieves the investor's porfolio that contains stocks and bonds
+'''@app.route('/api/iportfolio', methods=['GET'])
+def investor_porfolio():
+    request_data = request.get_json()
+    investor_id = request_data['id']
+    query = f'''SELECT * from investor where id = {investor_id} '''
+    cursor.execute(query)
+    var_print = cursor.fetchall()
+
+    #link Bond and stocks that's associated with their ID 
+
+    return var_print'''
+
+#User makes a transaction for the investor (buy or sell a stock or bond)
+'''@app.route('/api/itransaction', methods = ['POST'])
+def transaction():
+    request_data = request.get_json()
+    investor_id = request_data['id']
+    stock_id = request_data['stockname']
+    quantity = request_data['tbd'] '''
+
+#how do we identify the transaction in order to just only delete the transaction and not the variables associated with transaction 
+
+#User cancels (deletes) a transaction (stock or bond) entirely
+
+'''@app.route('/api/transaction', methods=['DELETE']) 
+def delete_transaction():
+    request_data = request.get_json()
+    deltransaction = request_data['tbd']
+    query = f'''DELETE FROM transaction WHERE id = {deltransaction};'''
+
+    execute_query(conn, query)
+    return 'Deleted transaction!''''
+
+
+
+
+
+
+
+
+
 
 
 #Final Code line
