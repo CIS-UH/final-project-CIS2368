@@ -343,10 +343,15 @@ def investor_porfolio():
 
     return jsonify(stock_result, bond_result)
 
+#Chat GPT helped with sql query
 
-    
+#JSON INPUT
+'''
+{
+    "id": 1
+}
+'''
 
-    return var_print, 
 '''                                    INVESTOR'S PORTFOLIO TRANSACTION                                   '''
 
 #User makes a transaction for the investor (buy or sell a stock)
