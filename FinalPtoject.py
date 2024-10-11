@@ -285,11 +285,11 @@ def delete_bond():
 '''                                    INVESTOR'S PORTFOLIO -BOND/STOCK-                                     '''
 
 #Retrieves the investor's porfolio that contains stocks and bonds
-@app.route('/api/iportfolio', methods=['GET'])
+@app.route('/api/portfolio', methods=['GET'])
 def investor_porfolio():
     request_data = request.get_json()
     investor_id = request_data['id']
-    query = f'''SELECT * from investor where id = {investor_id} '''
+    query = f'''SELECT i.firstname i.lastname distinct from investor i, bondtransaction b, stocktransactions s where id = {investor_id} '''
     cursor.execute(query)
     var_print = cursor.fetchall()
 
@@ -329,6 +329,8 @@ def transaction_stock():
                 quantities = cursor.fetchall()
                 for quantity1 in quantities:
                     total += quantity1['quantity']
+            else:
+                message = 'Stock not found'
             if total + quantity < 0:
                 message = 'Selling quantity greater than investor portfolio'
                 break
@@ -339,6 +341,25 @@ def transaction_stock():
                 break
                     
     return jsonify(message)
+
+#JSON Input Example
+#Buy stock
+'''
+{
+    "id": 1,
+    "stock_id": 1,
+    "quantity": 5.00
+}
+'''
+#Sell stock
+'''
+{
+    "id": 1,
+    "stock_id": 1,
+    "quantity": -5.00
+}
+'''
+
 
 
 #User makes a transaction for the investor (buy or sell a bond)
@@ -372,7 +393,7 @@ def transaction_bond():
                 quantities = cursor.fetchall()
                 for quantity1 in quantities:
                     total += quantity1['quantity']
-            if total < quantity:
+            if total + quantity < 0:
                 message = 'Selling quantity greater than investor portfolio'
                 break
             else:
@@ -380,8 +401,27 @@ def transaction_bond():
                 execute_query(conn, query)
                 message = 'Bond Sold'
                 break
-
+                    
     return jsonify(message)
+
+
+#JSON Input Example
+#Buy bond
+'''
+{
+    "id": 1,
+    "stock_id": 1,
+    "quantity": 5.00
+}
+'''
+#Sell bond
+'''
+{
+    "id": 1,
+    "stock_id": 1,
+    "quantity": -5.00
+}
+'''
     
 
 
@@ -389,16 +429,38 @@ def transaction_bond():
 
 #User cancels (deletes) a transaction (stock or bond) entirely
 
-@app.route('/api/transaction', methods=['DELETE']) 
-def delete_transaction():
+@app.route('/api/deletestock', methods=['DELETE']) 
+def delete_stock_transaction():
     request_data = request.get_json()
-    deltransaction = request_data['tbd']
-    query = f'''DELETE FROM transaction WHERE id = {deltransaction};'''
+    id = request_data['id']
+    query = f'''DELETE FROM stocktransaction WHERE id = {id};'''
 
     execute_query(conn, query)
-    return 'Deleted transaction!'
+    return 'Deleted stock transaction!'
 
 
+#JSON Delete Example
+#Delete Stock 
+'''
+{
+    "id": 1
+}
+'''
+@app.route('/api/deletebond', methods=['DELETE']) 
+def delete_bond_transaction():
+    request_data = request.get_json()
+    id = request_data['id']
+    query = f'''DELETE FROM bondtransaction WHERE id = {id};'''
+
+    execute_query(conn, query)
+    return 'Deleted bond transaction!'
+#JSON Delete Example
+#Delete Bond 
+'''
+{
+    "id": 1
+}
+'''
 
 
 

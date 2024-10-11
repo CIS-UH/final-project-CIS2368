@@ -8,3 +8,7 @@ Initiate final project file on 10/03/2024
 10/08/2024: LT and MC initate CRUD API's on FinalProject.py
 10/10/2024: LT and MC working on, and finished the the final part of Sprint 1 
 
+references: https://www.geeksforgeeks.org/sql-tutorial/
+            https://www.w3schools.com/sql/
+            https://stackoverflow.com/
+            https://chatgpt.com/ 
