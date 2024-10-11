@@ -8,6 +8,16 @@ Initiate final project file on 10/03/2024
 10/08/2024: LT and MC initate CRUD API's on FinalProject.py
 10/10/2024: LT and MC working on, and finished the the final part of Sprint 1 
 
+Sprint 1 requirements: 
+• User creates, updates, deletes, or selects an investor. 
+• User creates, updates, or deletes a bond. 
+• User creates, updates, or deletes a stock. 
+• User sees the investors current portfolio (stocks and bonds). 
+• User makes a transaction for the investor (either buy or sell a stock or bond) 
+• User cancels (deletes) a transaction (stock or bond) entirely. 
+
+
+
 references: https://www.geeksforgeeks.org/sql-tutorial/
             https://www.w3schools.com/sql/
             https://stackoverflow.com/

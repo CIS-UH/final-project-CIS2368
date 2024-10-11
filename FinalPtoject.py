@@ -289,13 +289,64 @@ def delete_bond():
 def investor_porfolio():
     request_data = request.get_json()
     investor_id = request_data['id']
-    query = f'''SELECT i.firstname i.lastname distinct from investor i, bondtransaction b, stocktransactions s where id = {investor_id} '''
-    cursor.execute(query)
-    var_print = cursor.fetchall()
 
-    #link Bond and stocks that's associated with their ID 
+    stock_query = '''
+        SELECT 
+            i.firstname, 
+            i.lastname, 
+            s.stockname, 
+            s.abbreviation, 
+            SUM(st.quantity) AS total_quantity, 
+            (SUM(st.quantity) * s.currentprice) AS total_value
+        FROM 
+            investor i
+        JOIN 
+            stocktransaction st ON i.id = st.investorid
+        JOIN 
+            stock s ON st.stockid = s.id
+        WHERE 
+            i.id = %s
+        GROUP BY 
+            i.firstname, i.lastname, s.stockname, s.abbreviation, s.currentprice
+        HAVING 
+            total_quantity > 0;
+    '''
+    
+    cursor.execute(stock_query, (investor_id,))
+    stock_result = cursor.fetchall()
+    
+    bond_query = '''
+        SELECT 
+            i.firstname, 
+            i.lastname, 
+            b.bondname, 
+            b.abbreviation, 
+            SUM(bt.quantity) AS total_quantity, 
+            (SUM(bt.quantity) * b.currentprice) AS total_value
+        FROM 
+            investor i
+        JOIN 
+            bondtransaction bt ON i.id = bt.investorid
+        JOIN 
+            bond b ON bt.bondid = b.id
+        WHERE 
+            i.id = %s
+        GROUP BY 
+            i.firstname, i.lastname, b.bondname, b.abbreviation, b.currentprice
+        HAVING 
+            total_quantity > 0;
+    '''
+    
+    cursor.execute(bond_query, (investor_id,))
+    bond_result = cursor.fetchall()
 
-    return var_print
+
+    return jsonify(stock_result, bond_result)
+
+
+    #join sql function for the two tables??? 
+
+    return var_print, 
 '''                                    INVESTOR'S PORTFOLIO TRANSACTION                                   '''
 
 #User makes a transaction for the investor (buy or sell a stock)
@@ -410,7 +461,7 @@ def transaction_bond():
 '''
 {
     "id": 1,
-    "stock_id": 1,
+    "bond_id": 1,
     "quantity": 5.00
 }
 '''
@@ -418,14 +469,11 @@ def transaction_bond():
 '''
 {
     "id": 1,
-    "stock_id": 1,
+    "bond_id": 1,
     "quantity": -5.00
 }
 '''
     
-
-
-#how do we identify the transaction in order to just only delete the transaction and not the variables associated with transaction 
 
 #User cancels (deletes) a transaction (stock or bond) entirely
 
