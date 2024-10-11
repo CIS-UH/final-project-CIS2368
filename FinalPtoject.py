@@ -287,7 +287,7 @@ def delete_bond():
 def investor_porfolio():
     request_data = request.get_json()
     investor_id = request_data['id']
-    query = f'''SELECT * from investor where id = {investor_id} '''
+    query = f'''SELECT * from investor where id = {investor_id} ''')
     cursor.execute(query)
     var_print = cursor.fetchall()
 
