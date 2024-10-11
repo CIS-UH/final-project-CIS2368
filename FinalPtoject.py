@@ -344,7 +344,7 @@ def investor_porfolio():
     return jsonify(stock_result, bond_result)
 
 
-    #join sql function for the two tables??? 
+    
 
     return var_print, 
 '''                                    INVESTOR'S PORTFOLIO TRANSACTION                                   '''
