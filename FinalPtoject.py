@@ -300,8 +300,7 @@ def investor_porfolio():
 
 #User makes a transaction for the investor (buy or sell a stock)
 @app.route('/api/transactionstock', methods = ['POST'])
-def transaction():
-    current_day = date.today()
+def transaction_stock():
     total = 0
     query = f'''SELECT * from stock'''
     cursor.execute(query)
@@ -316,22 +315,26 @@ def transaction():
     elif quantity > 0:
         for stock in stocks:
             if stock['id'] == id:
-                query = f'''INSERT INTO stocktransaction (STdate, investorid, stockid, quantity) values ({current_day}, {investor_id}, {id}, {quantity}) '''
-                message = 'Stock Bought!'
-        message = 'Stock Not Found'
+                query = f'''INSERT INTO stocktransaction (investorid, stockid, quantity) values ({investor_id}, {id}, {quantity});'''
+                execute_query(conn, query)
+                message = 'Stock bought'
+                break
+            else:
+                message = 'Stock not found'
     else:
         for stock in stocks:
             if stock['id'] == id:
-                query = f'''select quantity from stocktransaction where stockid = {id} and id = {investor_id}'''
+                query = f'''select quantity from stocktransaction where stockid = {id} and investorid = {investor_id}'''
                 cursor.execute(query)
                 quantities = cursor.fetchall()
-                for quantity in quantities:
-                    total += quantity['quantity']
-            if total < quantity:
+                for quantity1 in quantities:
+                    total += quantity1['quantity']
+            if total + quantity < 0:
                 message = 'Selling quantity greater than investor portfolio'
                 break
             else:
-                f'''INSERT INTO stocktransaction (STdate, investorid, stockid, quantity) values ({current_day}, {investor_id}, {id}, {quantity}) '''
+                query = f'''INSERT INTO stocktransaction (investorid, stockid, quantity) values ({investor_id}, {id}, {quantity});'''
+                execute_query(conn, query)
                 message = 'Stock Sold'
                 break
                     
@@ -339,8 +342,46 @@ def transaction():
 
 
 #User makes a transaction for the investor (buy or sell a bond)
+@app.route('/api/transactionbond', methods = ['POST'])
+def transaction_bond():
+    total = 0
+    query = f'''SELECT * from bond'''
+    cursor.execute(query)
+    bonds = cursor.fetchall()
+    message = ''
+    request_data = request.get_json()
+    investor_id = request_data['id']
+    id = request_data['bond_id']
+    quantity = request_data['quantity']
+    if quantity == 0:
+        message = 'Quantity cannot be 0 enter negative number for sell or positive for buy'
+    elif quantity > 0:
+        for bond in bonds:
+            if bond['id'] == id:
+                query = f'''INSERT INTO bondtransaction (investorid, bondid, quantity) values ({investor_id}, {id}, {quantity});'''
+                execute_query(conn, query)
+                message = 'Bond bought'
+                break
+            else:
+                message = 'Bond not found'
+    else:
+        for bond in bonds:
+            if bond['id'] == id:
+                query = f'''select quantity from bondtransaction where bondid = {id} and investorid = {investor_id}'''
+                cursor.execute(query)
+                quantities = cursor.fetchall()
+                for quantity1 in quantities:
+                    total += quantity1['quantity']
+            if total < quantity:
+                message = 'Selling quantity greater than investor portfolio'
+                break
+            else:
+                query = f'''INSERT INTO bondtransaction (investorid, bondid, quantity) values ({investor_id}, {id}, {quantity});'''
+                execute_query(conn, query)
+                message = 'Bond Sold'
+                break
 
-    
+    return jsonify(message)
     
 
 
