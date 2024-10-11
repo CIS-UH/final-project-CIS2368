@@ -2,10 +2,12 @@ import flask
 from flask import jsonify, request
 import creds
 import mysql.connector
+from datetime import date
 from mysql.connector import Error 
 from mysqlhelper import create_connection
 from mysqlhelper import execute_query 
 from mysqlhelper import execute_read_query
+
 
 myCreds = creds.Creds() 
 
@@ -283,38 +285,77 @@ def delete_bond():
 '''                                    INVESTOR'S PORTFOLIO -BOND/STOCK-                                     '''
 
 #Retrieves the investor's porfolio that contains stocks and bonds
-'''@app.route('/api/iportfolio', methods=['GET'])
+@app.route('/api/iportfolio', methods=['GET'])
 def investor_porfolio():
     request_data = request.get_json()
     investor_id = request_data['id']
-    query = f'''SELECT * from investor where id = {investor_id} ''')
+    query = f'''SELECT * from investor where id = {investor_id} '''
     cursor.execute(query)
     var_print = cursor.fetchall()
 
     #link Bond and stocks that's associated with their ID 
 
-    return var_print'''
+    return var_print
+'''                                    INVESTOR'S PORTFOLIO TRANSACTION                                   '''
 
-#User makes a transaction for the investor (buy or sell a stock or bond)
-'''@app.route('/api/itransaction', methods = ['POST'])
+#User makes a transaction for the investor (buy or sell a stock)
+@app.route('/api/transactionstock', methods = ['POST'])
 def transaction():
+    current_day = date.today()
+    total = 0
+    query = f'''SELECT * from stock'''
+    cursor.execute(query)
+    stocks = cursor.fetchall()
+    message = ''
     request_data = request.get_json()
     investor_id = request_data['id']
-    stock_id = request_data['stockname']
-    quantity = request_data['tbd'] '''
+    id = request_data['stock_id']
+    quantity = request_data['quantity']
+    if quantity == 0:
+        message = 'Quantity cannot be 0 enter negative number for sell or positive for buy'
+    elif quantity > 0:
+        for stock in stocks:
+            if stock['id'] == id:
+                query = f'''INSERT INTO stocktransaction (STdate, investorid, stockid, quantity) values ({current_day}, {investor_id}, {id}, {quantity}) '''
+                message = 'Stock Bought!'
+        message = 'Stock Not Found'
+    else:
+        for stock in stocks:
+            if stock['id'] == id:
+                query = f'''select quantity from stocktransaction where stockid = {id} and id = {investor_id}'''
+                cursor.execute(query)
+                quantities = cursor.fetchall()
+                for quantity in quantities:
+                    total += quantity['quantity']
+            if total < quantity:
+                message = 'Selling quantity greater than investor portfolio'
+                break
+            else:
+                f'''INSERT INTO stocktransaction (STdate, investorid, stockid, quantity) values ({current_day}, {investor_id}, {id}, {quantity}) '''
+                message = 'Stock Sold'
+                break
+                    
+    return jsonify(message)
+
+
+#User makes a transaction for the investor (buy or sell a bond)
+
+    
+    
+
 
 #how do we identify the transaction in order to just only delete the transaction and not the variables associated with transaction 
 
 #User cancels (deletes) a transaction (stock or bond) entirely
 
-'''@app.route('/api/transaction', methods=['DELETE']) 
+@app.route('/api/transaction', methods=['DELETE']) 
 def delete_transaction():
     request_data = request.get_json()
     deltransaction = request_data['tbd']
     query = f'''DELETE FROM transaction WHERE id = {deltransaction};'''
 
     execute_query(conn, query)
-    return 'Deleted transaction!''''
+    return 'Deleted transaction!'
 
 
 
