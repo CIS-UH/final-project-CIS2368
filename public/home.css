@@ -1,0 +1,112 @@
+/* Global Styles */
+body {
+    background-color: #A5515E; /* Light gray background color */
+    font-family:'Lucida Sans', sans-serif; /* Simple and clean font */
+    color: #fff; /* Text color for general readability */
+    margin: 0;
+    padding: 0;
+}
+
+/* Section Styling */
+section {
+    padding: 50px 0;
+}
+
+/* Section 1: Intro and Header */
+#intro {
+    background-color: #A5515E; /* Remove white background from #intro */
+    text-align: center;
+}
+
+#intro .container {
+    max-width: 800px;
+}
+
+#intro h1 {
+    font-size: 3rem;
+    color: #343a40; /* Dark text color */
+}
+
+#intro p {
+    font-size: 1.25rem;
+    color: #6c757d; /* Subtle text color */
+}
+
+#intro .btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    text-decoration: none;
+}
+
+#intro .btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Section 2: Carousel */
+#carousel {
+    background-color: #A5515E; /* Ensure same background color */
+}
+
+#carousel h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.carousel-inner img {
+    max-height: 500px;
+    object-fit: cover; /* Ensures the image fits within the carousel */
+}
+
+/* Section 3: Animation */
+#animation {
+    background-color: #A5515E; /* Ensure same background color */
+    text-align: center;
+}
+
+#animation img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Section 4: Links (Buttons) */
+#links {
+    background-color: #f8f9fa; /* Ensure same background color */
+    text-align: center;
+}
+
+#links .btn {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    background-color: #F48075;
+    color: white;
+    border: none;
+}
+
+#links .btn:hover {
+    background-color: #C43D36; /* Darker green on hover */
+}
+
+/* Footer Section */
+footer {
+    background-color: #502F40; /* Dark footer for contrast */
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+footer p {
+    font-size: 1rem;
+}
+
+footer p a {
+    color: #fff;
+    text-decoration: none;
+}
+
+footer p a:hover {
+    text-decoration: underline;
+    color:#F48075;
+}

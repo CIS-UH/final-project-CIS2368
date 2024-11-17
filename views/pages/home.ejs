@@ -3,20 +3,83 @@
 <body class="text-center">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <%- include('../template/nav')-%>
-        <main role="main" class="inner cover">
-            <h1 class="cover-heading">MasterEJS</h1>
-            <p class="lead">This is a sample app to Master EJS view template engine with Expressjs and Node.js framework
-            </p>
-            <p class="lead">
-                <a href="https://medium.com/swlh/master-ejs-template-engine-with-node-js-and-expressjs-979cc22b69be" class="btn btn-lg btn-secondary">Read More At Medium</a>
-            </p>
-        </main>
-        <%- include('../template/footer')-%>
+
+        <!-- Section 1: Intro and Header -->
+        <section id="intro" class="py-5 bg-light">
+            <div class="container">
+                <h1 class="display-3">Invest with Confidence</h1>
+                <p class="lead">Unlock Your Financial Future: Start Investing in Stocks and Bonds Today!</p>
+                <p>
+                    <a href="https://medium.com/swlh/master-ejs-template-engine-with-node-js-and-expressjs-979cc22b69be" class="btn btn-lg btn-secondary">Read More At Medium</a>
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 2: Carousel -->
+        <section id="carousel" class="py-5">
+            <div class="container">
+                <h2 class="mb-4">Our Features</h2>
+                <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="path/to/image1.jpg" class="d-block w-100" alt="Image 1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="path/to/image2.jpg" class="d-block w-100" alt="Image 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="path/to/image3.jpg" class="d-block w-100" alt="Image 3">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Animation -->
+        <section id="animation" class="py-5 bg-light">
+            <div class="container">
+                <h2 class="mb-4">Why Choose Us?</h2>
+                <img src="https://media.licdn.com/dms/image/D4D12AQHiBcaYNMCVtw/article-cover_image-shrink_720_1280/0/1696217456983?e=2147483647&v=beta&t=MBfAbiH5mOJSNwNuOH_Nn3fcM70_-uOQ-o6jV5_6kr4" alt="Good Investment" class="img-fluid">
+            </div>
+        </section>
+
+        <!-- Section 4: Buttons to Navigation Links -->
+        <section id="links" class="py-5">
+            <div class="container">
+                <h2 class="mb-4">Explore More</h2>
+                <div class="btn-group-horizontal">
+                    <a href="/links" class="btn btn-primary mb-2">Links</a>
+                    <a href="/list" class="btn btn-primary mb-2">List</a>
+                    <a href="/table" class="btn btn-primary mb-2">Table</a>
+                    <a href="/form" class="btn btn-primary mb-2">Form</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Footer with Company Info -->
+        <footer class="py-4 bg-dark text-white">
+            <div class="container text-center">
+                <p>&copy; 2024 Soju Webplex Corp | All Rights Reserved</p>
+                <p>Contact: info@sojuwebplex.com | Phone: (123) 456-7890</p>
+            </div>
+        </footer>
+
     </div>
 </body>
+
 <script>
     window.onload = function() {
         document.getElementById('home').classList.add('active');
-      };
+    };
 </script>
+
+
 </html>
