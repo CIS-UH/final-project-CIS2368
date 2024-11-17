@@ -14,7 +14,7 @@ section {
 
 /* Section 1: Intro and Header */
 #intro {
-    background-color: #A5515E; /* Remove white background from #intro */
+    background-color: transparent; /* Remove white background from #intro */
     text-align: center;
 }
 
@@ -46,7 +46,7 @@ section {
 
 /* Section 2: Carousel */
 #carousel {
-    background-color: #A5515E; /* Ensure same background color */
+    background-color: transparent; /* Ensure same background color */
 }
 
 #carousel h2 {
@@ -61,7 +61,7 @@ section {
 
 /* Section 3: Animation */
 #animation {
-    background-color: #A5515E; /* Ensure same background color */
+    background-color: transparent; /* Ensure same background color */
     text-align: center;
 }
 
@@ -72,7 +72,7 @@ section {
 
 /* Section 4: Links (Buttons) */
 #links {
-    background-color: #f8f9fa; /* Ensure same background color */
+    background-color: transparent; /* Ensure same background color */
     text-align: center;
 }
 
