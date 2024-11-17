@@ -27,7 +27,7 @@ a:hover {
 html,
 body {
   height: 100%;
-  background-color: rgb(12, 151, 12);
+  background-color: #a2574f;
 }
 
 body {
@@ -102,5 +102,5 @@ body {
  * Footer
  */
 .mastfoot {
-  color: rgba(255, 255, 255, .5);
+  color: white;
 }
