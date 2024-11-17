@@ -22,3 +22,7 @@ references: https://www.geeksforgeeks.org/sql-tutorial/
             https://www.w3schools.com/sql/
             https://stackoverflow.com/
             https://chatgpt.com/ 
+
+Sprint 2: 
+11/16/2024: initiate gitignore - Lily Tran 
+            implement masterEJS template for interface
