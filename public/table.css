@@ -1,0 +1,110 @@
+/* General Styling for Table Container */
+.card {
+    border-radius: 12px; /* Rounds the outer edges of the card */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for modern feel */
+    overflow: hidden; /* Ensures content stays within rounded corners */
+    background-color: #ffffff; /* Clean white background */
+}
+
+/* Table Header Styling */
+.table thead {
+    background: #A5515E;
+    color: #fff; /* White text for contrast */
+    border-radius: 12px 12px 0 0; /* Round top corners */
+}
+
+/* Table Row Hover Effect - Disable for headers */
+.table tbody tr:hover {
+    background-color: #f1f1f1; /* Light gray for hover effect */
+    transition: background-color 0.3s ease; /* Smooth transition for hover */
+}
+
+/* Make table wider and increase font size */
+.table {
+    width: 100%; /* Make table take full width */
+    border-collapse: separate; /* Ensures borders don't merge */
+    border-spacing: 0; /* Removes space between cells */
+    font-size: 16px; /* Larger font for better readability */
+    margin-bottom: 10px;
+}
+
+/* Table Borders */
+.table-bordered {
+    border: 1px solid #dee2e6; /* Light border for subtle definition */
+}
+
+/* Table Cell Padding and Text */
+.table td, .table th {
+    padding: 15px 20px; /* Increase padding for more spacious rows */
+    text-align: left; /* Aligns text to the left */
+    font-family: 'Lucida Sans', sans-serif; /* Modern, readable font */
+    font-size: 16px; /* Larger font size */
+    color: #fff; /* White text for readability */
+}
+
+/* Table Links */
+.table a {
+    color: #2b6777; /* Matches the header gradient */
+    text-decoration: none; /* Removes underline */
+}
+
+.table a:hover {
+    text-decoration: underline; /* Adds underline on hover */
+    color: #1f4e5e; /* Darker shade for hover */
+}
+
+/* Search Bar Styling */
+#tableFilter {
+    border-radius: 20px; /* Rounded corners */
+    padding: 12px 20px; /* Increase padding for search bar */
+    font-size: 16px; /* Consistent with table text */
+    border: 1px solid #cccccc; /* Light border */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
+    transition: border-color 0.3s ease; /* Smooth focus transition */
+}
+
+#tableFilter:focus {
+    border-color: #52ab98; /* Highlight border on focus */
+    outline: none; /* Removes default outline */
+    box-shadow: 0px 0px 8px rgba(82, 171, 152, 0.5); /* Glow effect */
+}
+
+/* Sortable Header Styling */
+th.sortable {
+    cursor: pointer; /* Indicates sortability */
+    position: relative; /* For sorting icon positioning */
+}
+
+th.sortable.asc::after,
+th.sortable.desc::after {
+    content: ''; /* Default content for pseudo-elements */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-style: solid;
+    display: inline-block;
+    width: 0;
+    height: 0;
+}
+
+th.sortable.asc::after {
+    border-width: 0 5px 5px 5px; /* Downward arrow */
+    border-color: transparent transparent #ffffff transparent;
+}
+
+th.sortable.desc::after {
+    border-width: 5px 5px 0 5px; /* Upward arrow */
+    border-color: #ffffff transparent transparent transparent;
+}
+
+/* Footer and Additional Styling */
+.card-body {
+    padding: 20px; /* Adds spacing inside the card */
+}
+
+.container {
+    max-width: 90%; /* Responsive width */
+    margin: auto; /* Center alignment */
+    padding-top: 20px; /* Adds top spacing */
+}

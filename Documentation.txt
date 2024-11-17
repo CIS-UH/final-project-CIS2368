@@ -26,3 +26,6 @@ references: https://www.geeksforgeeks.org/sql-tutorial/
 Sprint 2: 
 11/16/2024: initiate gitignore - Lily Tran 
             implement masterEJS template for interface
+Color scheme: https://www.figma.com/color-palettes/dark/ 
+Bootstrap: https://getbootstrap.com/docs/5.3/components/navbar/#how-it-works 
+Chatgpt for personalization 
