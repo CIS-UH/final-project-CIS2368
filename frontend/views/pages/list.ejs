@@ -13,6 +13,11 @@
         </main>
         <%- include('../template/footer')-%>
     </div>
+    <% if(locals.investorArray){ %>
+        <% investorArray.forEach(function(investor) { %>
+            <strong><%= investor.firstname %>: </strong><span><%= investor.id %></span><br>
+<% }) %>
+    <% } %>
 </body>
 <script>
     window.onload = function() {

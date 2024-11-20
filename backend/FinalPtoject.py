@@ -516,6 +516,12 @@ def delete_bond_transaction():
 '''
 
 
+#show all investors
+@app.route('/api/investor/all', methods=["GET"])
+def api_all_investors():
+    select_investors = "SELECT * FROM investor"
+    investors = execute_read_query(conn, select_investors)
+    return jsonify({"investors": investors})
 
 
 

@@ -1,6 +1,7 @@
 const express = require('express')
 var path = require('path');
 var bodyParser = require('body-parser');
+const { default: axios } = require('axios');
 const app = express();
 const port = 3000;
 // view engine setup
@@ -33,10 +34,25 @@ app.get('/links',function (req, res) {
 
 app.get('/list',function (req, res) {
     //array with items to send
-    var items = ['node.js','expressjs','ejs','javascript','bootstarp'];
-    res.render('pages/list',{
-        list:items
-    })
+    var apiurl = "http://127.0.0.1:5000/api/investor/all";
+    var items = ['node.js','expressjs','ejs','javascript','bootstarmie'];
+    axios.get(apiurl)
+        .then((response) => {
+            let investorArray = response.data.investors;
+            res.render('pages/list.ejs', {
+                investorArray: investorArray,
+                list:items
+            });
+        })
+        .catch((error) => {
+            console.error("Error fetching investor data:", error);
+            res.status(500).send("Error fetching investor data"); // More specific error
+        });
+        
+   // var items = ['node.js','expressjs','ejs','javascript','bootstarmie'];
+    //res.render('pages/list',{
+     //   list:items
+    //})
 });
 
 app.get('/table',function (req, res) {
@@ -71,3 +87,5 @@ app.post('/form',function (req, res) {
 });
 
 app.listen(port, () => console.log(`MasterEJS app Started on port ${port}!`));
+
+// 
