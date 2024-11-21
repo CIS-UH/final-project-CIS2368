@@ -1,27 +1,80 @@
 <%- include('../template/head')-%>
 
-<body class="text-center">
-    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-        <%- include('../template/nav')-%>
-        <main role="main" class="inner cover">
-            <h1 class="cover-heading">List Example</h1>
-            <ul class="list-group">
-                <%list.forEach(function(entry) {%>
-                <li class="list-group-item text-dark"><%=entry%></li>
-                <%});%>
-            </ul>
-        </main>
-        <%- include('../template/footer')-%>
-    </div>
-    <% if(locals.investorArray){ %>
-        <% investorArray.forEach(function(investor) { %>
-            <strong><%= investor.firstname %>: </strong><span><%= investor.id %></span><br>
-<% }) %>
-    <% } %>
-</body>
-<script>
-    window.onload = function() {
-        document.getElementById('list').classList.add('active');
-      };
-</script>
-</html>
+    <script>
+        function sendInvestorId() {
+            const dropdown = document.getElementById('investorDropdown');
+            const selectedValue = dropdown.value;
+
+            if (!selectedValue) {
+                alert('Please select an investor first!');
+                return;
+            }
+
+            // Make a POST request using fetch
+            fetch('/api/investor', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ investorId: selectedValue }),
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    alert(`Server response: ${data.message}`);
+                    // Redirect to the portfolio page
+                    window.location.href = '/portfolio';
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+        function handleInvestorSelection() {
+            const dropdown = document.getElementById('investorDropdown');
+            const selectedValue = dropdown.value;
+            const selectedText = dropdown.options[dropdown.selectedIndex].text;
+
+            // Store the selected investor ID in localStorage
+            localStorage.setItem('selectedInvestorId', selectedValue);
+
+            document.getElementById('selectedInvestorId').innerText = `Selected ID: ${selectedValue} (${selectedText})`;
+        }
+
+    </script>
+
+    </html>
+
+    <script>
+        window.onload = function () {
+            document.getElementById('list').classList.add('active');
+        };
+    </script>
+
+    <body class="text-center">
+        <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+            <%- include('../template/nav')-%>
+                <main role="main" class="inner cover">
+                    <h1 class="cover-heading">Investor Dropdown</h1>
+                    <select id="investorDropdown" class="form-select" onchange="handleInvestorSelection()">
+                        <option value="" disabled selected>Select an Investor</option>
+                        <% if(locals.investorArray) { %>
+                            <% investorArray.forEach(function(investor) { %>
+                                <option value="<%= investor.id %>">
+                                    <%= investor.firstname %>
+                                        <%= investor.lastname %>
+                                </option>
+                                <% }); %>
+                                    <% } %>
+                    </select>
+                    <p id="selectedInvestorId" class="mt-3"></p>
+                    <button id="sendInvestorId" class="btn btn-primary mt-3" onclick="sendInvestorId()">Submit</button>
+                </main>
+                <%- include('../template/footer')-%>
+        </div>
+    </body>
+
+    </html>

@@ -1,0 +1,99 @@
+<%- include('../template/head') -%>
+
+<body class="text-center">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <%- include('../template/nav') -%>
+        <main role="main" class="inner cover">
+            <div id="portfolioContainer" class="container">
+                <h2>Portfolio</h2>
+            
+                <!-- Stocks Section -->
+                <div id="stocksSection">
+                    <h3>Stocks</h3>
+                    <table id="stocksTable" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Stock Name</th>
+                                <th>Abbreviation</th>
+                                <th>Quantity</th>
+                                <th>Total Value</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            
+                <!-- Bonds Section -->
+                <div id="bondsSection">
+                    <h3>Bonds</h3>
+                    <table id="bondsTable" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Bond Name</th>
+                                <th>Abbreviation</th>
+                                <th>Quantity</th>
+                                <th>Total Value</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // Get the investor ID from localStorage or sessionStorage
+        const investorId = localStorage.getItem('selectedInvestorId');
+
+        // Fetch the portfolio data from the API
+        fetch('http://127.0.0.1:5000/api/portfolio', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: investorId }), // Use the stored investor ID
+        })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then((data) => {
+            // Destructure stocks and bonds arrays from response
+            const [stocks, bonds] = data;
+
+            // Populate Stocks Table
+            const stocksTableBody = document.querySelector('#stocksTable tbody');
+            stocksTableBody.innerHTML = ''; // Clear any previous rows
+            stocks.forEach((stock) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${stock.stockname}</td>
+                    <td>${stock.abbreviation}</td>
+                    <td>${stock.total_quantity}</td>
+                    <td>${stock.total_value.toFixed(2)}</td>
+                `;
+                stocksTableBody.appendChild(row);
+            });
+
+            // Populate Bonds Table
+            const bondsTableBody = document.querySelector('#bondsTable tbody');
+            bondsTableBody.innerHTML = ''; // Clear any previous rows
+            bonds.forEach((bond) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${bond.bondname}</td>
+                    <td>${bond.abbreviation}</td>
+                    <td>${bond.total_quantity}</td>
+                    <td>${bond.total_value.toFixed(2)}</td>
+                `;
+                bondsTableBody.appendChild(row);
+            });
+        })
+        .catch((error) => {
+            console.error('Error fetching portfolio data:', error);
+        });
+    </script>
+</body>
+</html>

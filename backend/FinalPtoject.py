@@ -7,6 +7,7 @@ from mysql.connector import Error
 from mysqlhelper import create_connection
 from mysqlhelper import execute_query 
 from mysqlhelper import execute_read_query
+from flask_cors import CORS
 
 
 myCreds = creds.Creds() 
@@ -17,6 +18,8 @@ cursor = conn.cursor(dictionary=True)
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
+
+CORS(app)
 
 #create CRUD API 
 
@@ -285,7 +288,7 @@ def delete_bond():
 '''                                    INVESTOR'S PORTFOLIO -BOND/STOCK-                                     '''
 
 #Retrieves the investor's porfolio that contains stocks and bonds
-@app.route('/api/portfolio', methods=['GET'])
+@app.route('/api/portfolio', methods=['POST'])
 def investor_porfolio():
     request_data = request.get_json()
     investor_id = request_data['id']
@@ -339,7 +342,6 @@ def investor_porfolio():
     
     cursor.execute(bond_query, (investor_id,))
     bond_result = cursor.fetchall()
-
 
     return jsonify(stock_result, bond_result)
 

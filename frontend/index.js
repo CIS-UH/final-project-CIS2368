@@ -18,6 +18,8 @@ app.get('/',function (req, res) {
     res.render('pages/home')
 });
 
+//LINKS PAGE
+
 app.get('/links',function (req, res) {
     //array with items to send
     var items = [
@@ -31,6 +33,8 @@ app.get('/links',function (req, res) {
         links:items
     })
 });
+
+//LIST PAGE (UC)
 
 app.get('/list',function (req, res) {
     //array with items to send
@@ -55,6 +59,21 @@ app.get('/list',function (req, res) {
     //})
 });
 
+app.get('/portfolio', (req, res) => {
+    res.render('pages/portfolio'); // Render the base template for now
+});
+
+app.post('/api/investor', (req, res) => {
+    const { investorId } = req.body;
+    if (!investorId) {
+        return res.status(400).json({ message: 'Investor ID is required' });
+    }
+    console.log(`Received Investor ID: ${investorId}`);
+    res.json({ message: `Investor ID ${investorId} processed successfully!` });
+});
+
+//TABLE PAGE
+
 app.get('/table',function (req, res) {
     //array with items to send
     var items = [
@@ -76,6 +95,8 @@ function messages(req,res,next){
     next();
 }
 
+//FORM PAGE
+
 app.get('/form',messages,function (req, res) {
     res.render('pages/form');
 });
@@ -87,5 +108,3 @@ app.post('/form',function (req, res) {
 });
 
 app.listen(port, () => console.log(`MasterEJS app Started on port ${port}!`));
-
-// 
