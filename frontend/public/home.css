@@ -40,7 +40,7 @@ section {
 }
 
 #intro .btn {
-    background-color: #007bff;
+    background-color: #F48075;
     color: #fff;
     border: none;
     padding: 12px 20px;
@@ -52,26 +52,9 @@ section {
     /* Darker blue on hover */
 }
 
-/* Section 2: Carousel */
-#carousel {
-    background-color: transparent;
-    /* Ensure same background color */
-}
-
-#carousel h2 {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.carousel-inner img {
-    max-height: 500px;
-    object-fit: cover;
-    /* Ensures the image fits within the carousel */
-}
-
 /* Section 3: Animation */
 #animation {
-    background-color: transparent;
+    background-color: #A5515E;
     /* Ensure same background color */
     text-align: center;
 }

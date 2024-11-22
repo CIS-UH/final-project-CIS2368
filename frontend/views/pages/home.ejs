@@ -10,14 +10,14 @@
                         <h1 class="display-3" style=" font-weight: bold;">Invest with Confidence</h1>
                         <p class="lead">Unlock Your Financial Future: Start Investing in Stocks and Bonds Today!</p>
                         <p>
-                            <a href="https://medium.com/swlh/master-ejs-template-engine-with-node-js-and-expressjs-979cc22b69be"
-                                class="btn btn-lg btn-secondary">Read More At Medium</a>
+                            <a href="https://www.investopedia.com/articles/basics/11/3-s-simple-investing.asp"
+                                class="btn btn-lg btn-secondary">Learn more about Investing</a>
                         </p>
                     </div>
                 </section>
 
                 <!-- Section 2: Carousel -->
-                <section id="carousel" class="py-5">
+                <!--<section id="carousel" class="py-5">
                     <div class="container">
                         <h2 class="mb-4">Our Features</h2>
                         <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
@@ -45,50 +45,61 @@
                             </button>
                         </div>
                     </div>
-                </section>
+                </section>-->
 
-                <!-- Section 3: Animation 
-                <section id="animation" class="py-5 bg-light">
+                <!--Table of Stocks and Bonds-->
+                <!--<table class="table">
+                    <thead>
+                        <h2> Stock Market </h2>
+                        <tr>
+                            <th scope="col">Stocks</th>
+                            <th scope="col">Value</th>
+                            <th scope="col">Bonds</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td> - </td>
+                            <td> - </td>
+                            <td>CAT Catanag</td>
+                            <td>$0.69</td>
+                        </tr>
+                        <tr>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                        </tr>
+                        <tr>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                        </tr>
+                    </tbody>
+                </table>-->
+
+                <!--Section 3: Animation-->
+                <section id="animation">
                     <div class="container">
-                        <h2 class="mb-4">Why Choose Us?</h2>
+                        <h2 class="mb-4" style="color: black;"> Why Choose Us? </h2>
                         <img src="https://media.licdn.com/dms/image/D4D12AQHiBcaYNMCVtw/article-cover_image-shrink_720_1280/0/1696217456983?e=2147483647&v=beta&t=MBfAbiH5mOJSNwNuOH_Nn3fcM70_-uOQ-o6jV5_6kr4"
                             alt="Good Investment" class="img-fluid">
                     </div>
-                </section> -->
-
-<<<<<<< HEAD
-                <!-- Section 4: Buttons to Navigation Links -->
-                <section id="links" class="py-5">
-                    <div class="container">
-                        <h2 class="mb-4">Explore More</h2>
-                        <div class="btn-group-horizontal">
-                            <a href="/links" class="btn btn-primary mb-2">Links</a>
-                            <a href="/investor" class="btn btn-primary mb-2">Investor</a>
-                            <a href="/table" class="btn btn-primary mb-2">Table</a>
-                            <a href="/form" class="btn btn-primary mb-2">Form</a>
-                        </div>
-                    </div>
                 </section>
-=======
-        <!-- Section 4: Buttons to Navigation Links -->
-        <section id="links" class="py-5">
-            <div class="container">
-                <h2 class="mb-4">Explore More</h2>
-                <div class="btn-group-horizontal">
-                    <a href="/links" class="btn btn-primary mb-2">Links</a>
-                    <a href="/investor" class="btn btn-primary mb-2">Investor</a>
-                    <a href="/stocks" class="btn btn-primary mb-2">Stocks</a>
-                    <a href="/bonds" class="btn btn-primary mb-2">Bonds</a>
-                </div>
-            </div>
-        </section>
->>>>>>> 26d9f9caf52cb593f69040eaf6c383c72a97c61f
 
-                <!-- Section 5: Footer with Company Info -->
-                <footer class="py-4 bg-dark text-white">
+                <!-- Section 5: Footer with Company Info and Links -->
+                <footer class="py-3 text-white">
                     <div class="container text-center">
                         <p>&copy; 2024 Soju Webplex Corp | All Rights Reserved</p>
                         <p>Contact: info@sojuwebplex.com | Phone: (123) 456-7890</p>
+
+                        <!-- Links Moved Here -->
+                        <div class="mt-3">
+                            <a href="/links" class="btn btn-primary mb-2 mx-1">Links</a>
+                            <a href="/investor" class="btn btn-primary mb-2 mx-1">Investor</a> <!-- works-->
+                            <a href="/frontend/views/pages/stock.ejs" class="btn btn-primary mb-2 mx-1">Stocks</a>
+                            <a href="/bonds" class="btn btn-primary mb-2 mx-1">Bonds</a> <!-- works-->
+                        </div>
                     </div>
                 </footer>
 

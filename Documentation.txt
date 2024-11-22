@@ -29,6 +29,7 @@ Sprint 2:
 Color scheme: https://www.figma.com/color-palettes/dark/ 
 Bootstrap: https://getbootstrap.com/docs/5.3/components/navbar/#how-it-works 
 Chatgpt for formatting 
+Investing context: https://www.investopedia.com/articles/basics/11/3-s-simple-investing.asp 
 
 11/20/2024: Implement CRUD for investor forum where users can input on the the website 
 Use the API already implemented from Sprint 1 -> render data with EJS with JS coding
