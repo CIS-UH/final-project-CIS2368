@@ -37,6 +37,7 @@ Use the API already implemented from Sprint 1 -> render data with EJS with JS co
 11/21/2024: Matthew worked on adjusting the Pages EJS to connect with the API and JS, 
             implemented SQL coding and continued on rendering
             Lily continue working on front end - home page 
+            Matthew: Chatgpt used for error fixing and some formatting
 
 11/22/2023: wrapping up last customization and rendering. 
 Recorded video on teams where Lily demonstrates the front end that users go through.
