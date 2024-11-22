@@ -6,7 +6,7 @@
         const selectedValue = dropdown.value;
 
         if (!selectedValue) {
-            alert('Please select an bond first!');
+            alert('Please select a bond first!');
             return;
         }
 
@@ -24,7 +24,8 @@
                 return response.json();
             })
             .then((data) => {
-                alert(`Server response: ${data.message}`);
+                // *** CHANGE: Removed bondId from the alert ***
+                alert(`Server response: Operation successful.`);
                 window.location.href = '/portfolio';
             })
             .catch((error) => {
@@ -37,10 +38,12 @@
         const selectedValue = dropdown.value;
         const selectedText = dropdown.options[dropdown.selectedIndex].text;
 
+        // *** CHANGE: Store the bondId internally but do not display it ***
         localStorage.setItem('selectedBondId', selectedValue);
         localStorage.setItem('selectedBond', selectedText);
 
-        document.getElementById('selectedBondId').innerText = `Selected ID: ${selectedValue} (${selectedText})`;
+        // *** CHANGE: Updated this line to avoid showing the ID ***
+        document.getElementById('selectedBondId').innerText = `Selected Bond: ${selectedText}`;
     }
 
     function redirectToEditBond() {
@@ -48,12 +51,12 @@
         const selectedValue = dropdown.value;
 
         if (!selectedValue) {
-            alert('Please select an bond first!');
+            alert('Please select a bond first!');
             return;
         }
 
         fetch('/api/bond', {
-            method: 'post',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -66,7 +69,8 @@
                 return response.json();
             })
             .then((data) => {
-                alert(`Server response: ${data.message}`);
+                // *** CHANGE: Removed bondId from the alert ***
+                alert(`Server response: Operation successful.`);
                 window.location.href = '/editbond';
             })
             .catch((error) => {
@@ -79,34 +83,29 @@
     }
 </script>
 
+<body class="text-center">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <%- include('../template/nav')-%>
+        <main role="main" class="inner cover">
+            <h1 class="cover-heading">Bond Dropdown</h1>
+            <select id="bondDropdown" class="form-select" onchange="handleBondSelection()">
+                <option value="" disabled selected>Select a Bond</option>
+                <% if(locals.bondArray) { %>
+                    <% bondArray.forEach(function(bond) { %>
+                        <option value="<%= bond.id %>">
+                            <%= bond.abbreviation %> <%= bond.bondname %> <%= bond.currentprice %>
+                        </option>
+                    <% }); %>
+                <% } %>
+            </select>
+            <!-- *** CHANGE: Updated text to exclude the ID display *** -->
+            <p id="selectedBondId" class="mt-3"></p>
 
-    <body class="text-center">
-        <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-            <%- include('../template/nav')-%>
-                <main role="main" class="inner cover">
-                    <h1 class="cover-heading">Bond Dropdown</h1>
-                    <select id="bondDropdown" class="form-select" onchange="handleBondSelection()">
-                        <option value="" disabled selected>Select a Bond</option>
-                        <% if(locals.bondArray) { %>
-                            <% bondArray.forEach(function(bond) { %>
-                                <option value="<%= bond.id %>">
-                                    <%= bond.abbreviation %>
-                                        <%= bond.bondname %>
-                                        <%= bond.currentprice %>
-                                </option>
-                                <% }); %>
-                                    <% } %>
-                    </select>
-                    <p id="selectedBondId" class="mt-3"></p>
+            <button id="editBond" class="btn btn-primary mt-3" onclick="redirectToEditBond()">Edit Bond</button>
+            <button id="createBond" class="btn btn-primary mt-3" onclick="redirectToCreateBond()">Create Bond</button>
+        </main>
+        <%- include('../template/footer')-%>
+    </div>
+</body>
 
-                    <button id="editBond" class="btn btn-primary mt-3" onclick="redirectToEditBond()">Edit
-                        Bond</button>
-
-                        <button id="createBond" class="btn btn-primary mt-3" onclick="redirectToCreateBond()">Create Bond</button>
-
-                </main>
-                <%- include('../template/footer')-%>
-        </div>
-    </body>
-
-    </html>
+</html>

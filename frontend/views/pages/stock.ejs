@@ -6,7 +6,7 @@
         const selectedValue = dropdown.value;
 
         if (!selectedValue) {
-            alert('Please select an stock first!');
+            alert('Please select a stock first!');
             return;
         }
 
@@ -24,7 +24,8 @@
                 return response.json();
             })
             .then((data) => {
-                alert(`Server response: ${data.message}`);
+                // *** CHANGE: Removed stockId from the alert ***
+                alert(`Server response: Operation successful.`);
                 window.location.href = '/portfolio';
             })
             .catch((error) => {
@@ -37,10 +38,12 @@
         const selectedValue = dropdown.value;
         const selectedText = dropdown.options[dropdown.selectedIndex].text;
 
+        // *** CHANGE: Store the stockId internally but do not display it ***
         localStorage.setItem('selectedStockId', selectedValue);
         localStorage.setItem('selectedStock', selectedText);
 
-        document.getElementById('selectedStockId').innerText = `Selected ID: ${selectedValue} (${selectedText})`;
+        // *** CHANGE: Updated this line to avoid showing the ID ***
+        document.getElementById('selectedStockId').innerText = `Selected Stock: ${selectedText}`;
     }
 
     function redirectToEditStock() {
@@ -48,7 +51,7 @@
         const selectedValue = dropdown.value;
 
         if (!selectedValue) {
-            alert('Please select an stock first!');
+            alert('Please select a stock first!');
             return;
         }
 
@@ -66,7 +69,8 @@
                 return response.json();
             })
             .then((data) => {
-                alert(`Server response: ${data.message}`);
+                // *** CHANGE: Removed stockId from the alert ***
+                alert(`Server response: Operation successful.`);
                 window.location.href = '/editstock';
             })
             .catch((error) => {
@@ -79,34 +83,29 @@
     }
 </script>
 
+<body class="text-center">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <%- include('../template/nav')-%>
+        <main role="main" class="inner cover">
+            <h1 class="cover-heading">Stock Dropdown</h1>
+            <select id="stockDropdown" class="form-select" onchange="handleStockSelection()">
+                <option value="" disabled selected>Select a Stock</option>
+                <% if(locals.stockArray) { %>
+                    <% stockArray.forEach(function(stock) { %>
+                        <option value="<%= stock.id %>">
+                            <%= stock.abbreviation %> <%= stock.stockname %> <%= stock.currentprice %>
+                        </option>
+                    <% }); %>
+                <% } %>
+            </select>
+            <!-- *** CHANGE: Updated text to exclude the ID display *** -->
+            <p id="selectedStockId" class="mt-3"></p>
 
-    <body class="text-center">
-        <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-            <%- include('../template/nav')-%>
-                <main role="main" class="inner cover">
-                    <h1 class="cover-heading">Stock Dropdown</h1>
-                    <select id="stockDropdown" class="form-select" onchange="handleStockSelection()">
-                        <option value="" disabled selected>Select a Stock</option>
-                        <% if(locals.stockArray) { %>
-                            <% stockArray.forEach(function(stock) { %>
-                                <option value="<%= stock.id %>">
-                                    <%= stock.abbreviation %>
-                                        <%= stock.stockname %>
-                                        <%= stock.currentprice %>
-                                </option>
-                                <% }); %>
-                                    <% } %>
-                    </select>
-                    <p id="selectedStockId" class="mt-3"></p>
+            <button id="editStock" class="btn btn-primary mt-3" onclick="redirectToEditStock()">Edit Stock</button>
+            <button id="createStock" class="btn btn-primary mt-3" onclick="redirectToCreateStock()">Create Stock</button>
+        </main>
+        <%- include('../template/footer')-%>
+    </div>
+</body>
 
-                    <button id="editStock" class="btn btn-primary mt-3" onclick="redirectToEditStock()">Edit
-                        Stock</button>
-
-                        <button id="createStock" class="btn btn-primary mt-3" onclick="redirectToCreateStock()">Create Stock</button>
-
-                </main>
-                <%- include('../template/footer')-%>
-        </div>
-    </body>
-
-    </html>
+</html>

@@ -24,7 +24,8 @@
                 return response.json();
             })
             .then((data) => {
-                alert(`Server response: ${data.message}`);
+                // *** CHANGE: Removed id from the alert ***
+                alert(`Server response: Operation successful.`);
                 window.location.href = '/portfolio';
             })
             .catch((error) => {
@@ -37,10 +38,12 @@
         const selectedValue = dropdown.value;
         const selectedText = dropdown.options[dropdown.selectedIndex].text;
 
+        // *** CHANGE: Store the investorId internally, but do not display it ***
         localStorage.setItem('selectedInvestorId', selectedValue);
         localStorage.setItem('selectedInvestor', selectedText);
 
-        document.getElementById('selectedInvestorId').innerText = `Selected ID: ${selectedValue} (${selectedText})`;
+        // *** CHANGE: Update this line to avoid showing the ID ***
+        document.getElementById('selectedInvestorId').innerText = `Selected Investor: ${selectedText}`;
     }
 
     function redirectToEditInvestor() {
@@ -66,7 +69,8 @@
                 return response.json();
             })
             .then((data) => {
-                alert(`Server response: ${data.message}`);
+                // *** CHANGE: Removed id from the alert ***
+                alert(`Server response: Operation successful.`);
                 window.location.href = '/editinvestor';
             })
             .catch((error) => {
@@ -79,38 +83,34 @@
     }
 </script>
 
+<body class="text-center">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <%- include('../template/nav')-%>
+        <main role="main" class="inner cover">
+            <h1 class="cover-heading">Investor Dropdown</h1>
+            <select id="investorDropdown" class="form-select" onchange="handleInvestorSelection()">
+                <option value="" disabled selected>Select an Investor</option>
+                <% if(locals.investorArray) { %>
+                    <% investorArray.forEach(function(investor) { %>
+                        <option value="<%= investor.id %>">
+                            <%= investor.firstname %> <%= investor.lastname %>
+                        </option>
+                    <% }); %>
+                <% } %>
+            </select>
+            <!-- *** CHANGE: Updated text to exclude the ID display *** -->
+            <p id="selectedInvestorId" class="mt-3"></p>
 
-    <body class="text-center">
-        <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-            <%- include('../template/nav')-%>
-                <main role="main" class="inner cover">
-                    <h1 class="cover-heading">Investor Dropdown</h1>
-                    <select id="investorDropdown" class="form-select" onchange="handleInvestorSelection()">
-                        <option value="" disabled selected>Select an Investor</option>
-                        <% if(locals.investorArray) { %>
-                            <% investorArray.forEach(function(investor) { %>
-                                <option value="<%= investor.id %>">
-                                    <%= investor.firstname %>
-                                        <%= investor.lastname %>
-                                </option>
-                                <% }); %>
-                                    <% } %>
-                    </select>
-                    <p id="selectedInvestorId" class="mt-3"></p>
+            <!-- Submit Button -->
+            <button id="sendInvestorId" class="btn btn-primary mt-3" onclick="sendInvestorId()">View Portfolio</button>
 
-                    <!-- Submit Button -->
-                    <button id="sendInvestorId" class="btn btn-primary mt-3" onclick="sendInvestorId()">View
-                        Portfolio</button>
+            <!-- New Edit Button -->
+            <button id="editInvestor" class="btn btn-primary mt-3" onclick="redirectToEditInvestor()">Edit Investor</button>
 
-                    <!-- New Edit Button -->
-                    <button id="editInvestor" class="btn btn-primary mt-3" onclick="redirectToEditInvestor()">Edit
-                        Investor</button>
+            <button id="createInvestor" class="btn btn-primary mt-3" onclick="redirectToCreateInvestor()">Create Investor</button>
+        </main>
+        <%- include('../template/footer')-%>
+    </div>
+</body>
 
-                        <button id="createInvestor" class="btn btn-primary mt-3" onclick="redirectToCreateInvestor()">Create Investor</button>
-
-                </main>
-                <%- include('../template/footer')-%>
-        </div>
-    </body>
-
-    </html>
+</html>

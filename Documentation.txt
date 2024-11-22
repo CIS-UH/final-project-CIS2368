@@ -33,10 +33,15 @@ Chatgpt for formatting
 11/20/2024: Implement CRUD for investor forum where users can input on the the website 
 Use the API already implemented from Sprint 1 -> render data with EJS with JS coding
 
-11/21/2024: 
+11/21/2024: Matthew worked on adjusting the Pages EJS to connect with the API and JS, 
+            implemented SQL coding and continued on rendering
+            Lily continue working on front end - home page 
 
 11/22/2023: wrapping up last customization and rendering. 
 Recorded video on teams where Lily demonstrates the front end that users go through.
-Matthew explains the backend and the coding associated for the projec. 
+Matthew explains the backend and the coding associated for the project 
+Removed the ID function as it was used for referencing the code but is not allowed to be displayed 
 
-11/23/2024: Sprint 2 is due 
+Video Link: https://uofh-my.sharepoint.com/:v:/g/personal/latran2_cougarnet_uh_edu/EQjmHksX4zlNsFrZ3RSv6UYBUig62yML4JHVbtxuWKDCog?e=9fJhRM&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D
+
+11/23/2024: Sprint 2 is due and submitted in the afternoon 
