@@ -1,0 +1,140 @@
+<%- include('../template/head') -%>
+
+<body class="text-center">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <%- include('../template/nav') -%>
+        <main role="main" class="inner cover">
+            <h1 class="cover-heading">Edit Bond Page</h1>
+            <p id="bond-details" style="font-weight: bold; margin-bottom: 20px;"></p>
+            <p>Edit the bond details below:</p>
+
+            <div>
+                <label for="bondname">Bond Name:</label>
+                <input type="text" id="bondname" name="bondname" />
+            </div>
+            <div>
+                <label for="abbreviation">Abbreviation:</label>
+                <input type="text" id="abbreviation" name="abbreviation" />
+            </div>
+            <div>
+                <label for="currentprice">Current Price:</label>
+                <input type="number" id="currentprice" name="currentprice" />
+            </div>
+            <div style="margin-top: 20px;">
+                <button onclick="updateBond()" class="btn btn-primary">Update Bond</button>
+                <button onclick="deleteBond()" class="btn btn-danger">Delete Bond</button>
+            </div>
+        </main>
+        <%- include('../template/footer') -%>
+    </div>
+</body>
+
+</html>
+
+<script>
+    // Retrieve selected bond ID and name from local storage
+    const bondId = localStorage.getItem('selectedBondId');
+    const bondName = localStorage.getItem('selectedBond');
+
+    // Display the bond's name on the page
+    document.addEventListener("DOMContentLoaded", () => {
+        const bondNameDisplay = document.getElementById("bond-details");
+        if (bondName) {
+            bondNameDisplay.textContent = `Editing Bond: ${bondName}`;
+        } else {
+            bondNameDisplay.textContent = "Bond details unavailable.";
+        }
+
+        // Fetch bond details from API
+        fetchBondDetails();
+    });
+
+    // Fetch bond details on page load
+    async function fetchBondDetails() {
+        try {
+            // Fetch bond by ID
+            const response = await fetch(`/api/bond/${bondId}`);
+            const bond = await response.json();
+
+            // Populate input fields with the retrieved bond details
+            document.getElementById('bondname').value = bond.bondname;
+            document.getElementById('abbreviation').value = bond.abbreviation;
+            document.getElementById('currentprice').value = bond.currentprice;
+        } catch (error) {
+            console.error("Error fetching bond details:", error);
+        }
+    }
+
+    // Handle updating a bond
+    async function updateBond() {
+        const bondname = document.getElementById('bondname').value;
+        const abbreviation = document.getElementById('abbreviation').value;
+        const currentprice = document.getElementById('currentprice').value;
+
+        if (!bondname || !abbreviation || !currentprice) {
+            alert("Please fill out all fields!");
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://127.0.0.1:5000/api/bond`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: bondId,
+                    bondname,
+                    abbreviation,
+                    currentprice,
+                }),
+            });
+
+            if (response.ok) {
+                alert(`Bond "${bondName}" has been updated to "${bondname}" with abbreviation "${abbreviation}" and price ${currentprice}.`);
+                redirectToBondPage(); // Call the redirect function
+            } else {
+                const errorText = await response.text();
+                console.error("Error response from server:", errorText);
+                alert("Error updating bond.");
+            }
+        } catch (error) {
+            console.error("Error updating bond:", error);
+            alert("Error updating bond.");
+        }
+
+        // Redirection function
+        function redirectToBondPage() {
+            window.location.href = '/bonds'; // Redirect to bond listing page
+        }
+    }
+
+    // Handle deleting a bond
+    async function deleteBond() {
+        if (!confirm(`Are you sure you want to delete bond "${bondName}"?`)) {
+            return; // Cancel deletion if user declines
+        }
+
+        try {
+            const response = await fetch(`http://127.0.0.1:5000/api/bond?id=${bondId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: bondId }),
+            });
+
+            if (response.ok) {
+                alert(`Bond "${bondName}" has been deleted.`);
+                window.location.href = '/bonds'; // Redirect to bond listing page
+            } else {
+                const errorText = await response.text();
+                console.error("Server responded with error:", errorText);
+                alert("Error deleting bond.");
+            }
+        } catch (error) {
+            console.error("Error deleting bond:", error);
+            alert("Error deleting bond.");
+        }
+    }
+</script>

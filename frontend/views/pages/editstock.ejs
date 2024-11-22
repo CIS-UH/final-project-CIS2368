@@ -1,11 +1,13 @@
 <%- include('../template/head') -%>
+
 <body class="text-center">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <%- include('../template/nav') -%>
         <main role="main" class="inner cover">
             <h1 class="cover-heading">Edit Stock Page</h1>
+            <p id="stock-details" style="font-weight: bold; margin-bottom: 20px;"></p>
             <p>Edit the stock details below:</p>
-            
+
             <div>
                 <label for="stockname">Stock Name:</label>
                 <input type="text" id="stockname" name="stockname" />
@@ -32,7 +34,20 @@
 <script>
     // Retrieve selected stock ID and name from local storage
     const stockId = localStorage.getItem('selectedStockId');
-    const stockName = localStorage.getItem('selectedStockName');
+    const stockName = localStorage.getItem('selectedStock');
+
+    // Display the stock's name on the page
+    document.addEventListener("DOMContentLoaded", () => {
+        const stockNameDisplay = document.getElementById("stock-details");
+        if (stockName) {
+            stockNameDisplay.textContent = `Editing Stock: ${stockName}`;
+        } else {
+            stockNameDisplay.textContent = "Stock details unavailable.";
+        }
+
+        // Fetch stock details from API
+        fetchStockDetails();
+    });
 
     // Fetch stock details on page load
     async function fetchStockDetails() {
@@ -49,8 +64,6 @@
             console.error("Error fetching stock details:", error);
         }
     }
-
-    document.addEventListener("DOMContentLoaded", fetchStockDetails);
 
     // Handle updating a stock
     async function updateStock() {
@@ -70,7 +83,7 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    id: stockId, 
+                    id: stockId,
                     stockname,
                     abbreviation,
                     currentprice,
@@ -79,7 +92,7 @@
 
             if (response.ok) {
                 alert(`Stock "${stockName}" has been updated to "${stockname}" with abbreviation "${abbreviation}" and price ${currentprice}.`);
-                window.location.href = '/stock'; // Redirect to stock listing page
+                redirectToStockPage(); // Call the redirect function
             } else {
                 const errorText = await response.text();
                 console.error("Error response from server:", errorText);
@@ -88,6 +101,11 @@
         } catch (error) {
             console.error("Error updating stock:", error);
             alert("Error updating stock.");
+        }
+
+        // Redirection function
+        function redirectToStockPage() {
+            window.location.href = '/stock'; // Redirect to stock listing page
         }
     }
 

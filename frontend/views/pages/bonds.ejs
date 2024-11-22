@@ -1,21 +1,21 @@
 <%- include('../template/head')-%>
 
 <script>
-    function sendStockId() {
-        const dropdown = document.getElementById('stockDropdown');
+    function sendBondId() {
+        const dropdown = document.getElementById('bondDropdown');
         const selectedValue = dropdown.value;
 
         if (!selectedValue) {
-            alert('Please select an stock first!');
+            alert('Please select an bond first!');
             return;
         }
 
-        fetch('/api/stock', {
+        fetch('/api/bond', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ stockId: selectedValue }),
+            body: JSON.stringify({ bondId: selectedValue }),
         })
             .then((response) => {
                 if (!response.ok) {
@@ -32,32 +32,32 @@
             });
     }
 
-    function handleStockSelection() {
-        const dropdown = document.getElementById('stockDropdown');
+    function handleBondSelection() {
+        const dropdown = document.getElementById('bondDropdown');
         const selectedValue = dropdown.value;
         const selectedText = dropdown.options[dropdown.selectedIndex].text;
 
-        localStorage.setItem('selectedStockId', selectedValue);
-        localStorage.setItem('selectedStock', selectedText);
+        localStorage.setItem('selectedBondId', selectedValue);
+        localStorage.setItem('selectedBond', selectedText);
 
-        document.getElementById('selectedStockId').innerText = `Selected ID: ${selectedValue} (${selectedText})`;
+        document.getElementById('selectedBondId').innerText = `Selected ID: ${selectedValue} (${selectedText})`;
     }
 
-    function redirectToEditStock() {
-        const dropdown = document.getElementById('stockDropdown');
+    function redirectToEditBond() {
+        const dropdown = document.getElementById('bondDropdown');
         const selectedValue = dropdown.value;
 
         if (!selectedValue) {
-            alert('Please select an stock first!');
+            alert('Please select an bond first!');
             return;
         }
 
-        fetch('/api/stock', {
+        fetch('/api/bond', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ stockId: selectedValue }),
+            body: JSON.stringify({ bondId: selectedValue }),
         })
             .then((response) => {
                 if (!response.ok) {
@@ -67,15 +67,15 @@
             })
             .then((data) => {
                 alert(`Server response: ${data.message}`);
-                window.location.href = '/editstock';
+                window.location.href = '/editbond';
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
     }
 
-    function redirectToCreateStock() {
-        window.location.href = '/createstock';
+    function redirectToCreateBond() {
+        window.location.href = '/createbond';
     }
 </script>
 
@@ -84,25 +84,25 @@
         <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
             <%- include('../template/nav')-%>
                 <main role="main" class="inner cover">
-                    <h1 class="cover-heading">Stock Dropdown</h1>
-                    <select id="stockDropdown" class="form-select" onchange="handleStockSelection()">
-                        <option value="" disabled selected>Select a Stock</option>
-                        <% if(locals.stockArray) { %>
-                            <% stockArray.forEach(function(stock) { %>
-                                <option value="<%= stock.id %>">
-                                    <%= stock.abbreviation %>
-                                        <%= stock.stockname %>
-                                        <%= stock.currentprice %>
+                    <h1 class="cover-heading">Bond Dropdown</h1>
+                    <select id="bondDropdown" class="form-select" onchange="handleBondSelection()">
+                        <option value="" disabled selected>Select a Bond</option>
+                        <% if(locals.bondArray) { %>
+                            <% bondArray.forEach(function(bond) { %>
+                                <option value="<%= bond.id %>">
+                                    <%= bond.abbreviation %>
+                                        <%= bond.bondname %>
+                                        <%= bond.currentprice %>
                                 </option>
                                 <% }); %>
                                     <% } %>
                     </select>
-                    <p id="selectedStockId" class="mt-3"></p>
+                    <p id="selectedBondId" class="mt-3"></p>
 
-                    <button id="editStock" class="btn btn-primary mt-3" onclick="redirectToEditStock()">Edit
-                        Stock</button>
+                    <button id="editBond" class="btn btn-primary mt-3" onclick="redirectToEditBond()">Edit
+                        Bond</button>
 
-                        <button id="createStock" class="btn btn-primary mt-3" onclick="redirectToCreateStock()">Create Stock</button>
+                        <button id="createBond" class="btn btn-primary mt-3" onclick="redirectToCreateBond()">Create Bond</button>
 
                 </main>
                 <%- include('../template/footer')-%>

@@ -117,6 +117,39 @@ app.get('/createstock', (req, res) => {
     res.render('pages/createstock');
 });
 
+app.get('/bonds', function (req, res) {
+    //array with items to send
+    var apiurl = "http://127.0.0.1:5000/api/bond/all";
+    axios.get(apiurl)
+        .then((response) => {
+            let bondArray = response.data.bonds;
+            res.render('pages/bonds.ejs', {
+                bondArray: bondArray,
+            });
+        })
+        .catch((error) => {
+            console.error("Error fetching investor data:", error);
+            res.status(500).send("Error fetching investor data"); // More specific error
+        });
+});
+
+app.post('/api/bond', (req, res) => {
+    const { bondId } = req.body;
+    if (!bondId) {
+        return res.status(400).json({ message: 'bond ID is required' });
+    }
+    console.log(`Received bond ID: ${bondId}`);
+    res.json({ message: `bond ID ${bondId} processed successfully!` });
+});
+
+app.get('/editbond', (req, res) => {
+    res.render('pages/editbond'); // Render the base template for now
+});
+
+app.get('/createbond', (req, res) => {
+    res.render('pages/createbond');
+});
+
 //our alert message midleware
 function messages(req, res, next) {
     var message;

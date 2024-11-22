@@ -4,13 +4,13 @@
         <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
             <%- include('../template/nav')-%>
                 <main role="main" class="inner cover">
-                    <h1 class="cover-heading">Create Stock</h1>
+                    <h1 class="cover-heading">Create Bond</h1>
 
-                    <!-- Form for creating a new stock -->
-                    <form id="createStockForm" class="mt-4">
+                    <!-- Form for creating a new bond -->
+                    <form id="createBondForm" class="mt-4">
                         <div class="mb-3">
-                            <label for="stockname" class="form-label">Stock Name</label>
-                            <input type="text" id="stockname" class="form-control" placeholder="Enter stock name"
+                            <label for="bondname" class="form-label">Bond Name</label>
+                            <input type="text" id="bondname" class="form-control" placeholder="Enter bond name"
                                 required>
                         </div>
                         <div class="mb-3">
@@ -23,45 +23,45 @@
                             <input type="number" id="currentprice" class="form-control"
                                 placeholder="Enter current price" required>
                         </div>
-                        <button type="button" class="btn btn-primary" onclick="submitCreateStock()">Submit</button>
+                        <button type="button" class="btn btn-primary" onclick="submitCreateBond()">Submit</button>
                     </form>
                 </main>
                 <%- include('../template/footer')-%>
         </div>
 
         <script>
-            function submitCreateStock() {
-                const stockname = document.getElementById('stockname').value;
+            function submitCreateBond() {
+                const bondname = document.getElementById('bondname').value;
                 const abbreviation = document.getElementById('abbreviation').value;
                 const currentprice = document.getElementById('currentprice').value;
 
-                if (!stockname || !abbreviation || !currentprice) {
+                if (!bondname || !abbreviation || !currentprice) {
                     alert('Please fill out all fields!');
                     return;
                 }
 
-                // Make a POST request to create a new stock
-                fetch('http://127.0.0.1:5000/api/stock', {
+                // Make a POST request to create a new bond
+                fetch('http://127.0.0.1:5000/api/bond', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ stockname, abbreviation, currentprice }),
+                    body: JSON.stringify({ bondname, abbreviation, currentprice }),
                 })
                     .then((response) => {
                         if (!response.ok) {
-                            throw new Error('Failed to create stock');
+                            throw new Error('Failed to create bond');
                         }
                         return response.text(); // Expect plain text response
                     })
                     .then((message) => {
                         console.log('Response message:', message);
                         alert(message); // Display the plain text response in the alert
-                        window.location.href = '/stock'; // Redirect to stock listing page
+                        window.location.href = '/bonds'; // Redirect to bond listing page
                     })
                     .catch((error) => {
-                        console.error('Error creating stock:', error);
-                        alert('Error creating stock.');
+                        console.error('Error creating bond:', error);
+                        alert('Error creating bond.');
                     });
             }
 
