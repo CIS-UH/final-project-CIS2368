@@ -1,8 +1,11 @@
 /* Global Styles */
 body {
-    background-color: #A5515E; /* Light gray background color */
-    font-family:'Lucida Sans', sans-serif; /* Simple and clean font */
-    color: #fff; /* Text color for general readability */
+    background-color: #A5515E;
+    /* Light gray background color */
+    font-family: 'Lucida Sans', sans-serif;
+    /* Simple and clean font */
+    color: #fff;
+    /* Text color for general readability */
     margin: 0;
     padding: 0;
 }
@@ -14,8 +17,10 @@ section {
 
 /* Section 1: Intro and Header */
 #intro {
-    background-color: transparent; /* Remove white background from #intro */
+    background-color: transparent;
+    /* Remove white background from #intro */
     text-align: center;
+    font-weight: 700;
 }
 
 #intro .container {
@@ -24,12 +29,14 @@ section {
 
 #intro h1 {
     font-size: 3rem;
-    color: #343a40; /* Dark text color */
+    color: #fff;
+    /* Dark text color */
 }
 
 #intro p {
     font-size: 1.25rem;
-    color: #6c757d; /* Subtle text color */
+    color: #fff;
+    /* Subtle text color */
 }
 
 #intro .btn {
@@ -41,12 +48,14 @@ section {
 }
 
 #intro .btn:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3;
+    /* Darker blue on hover */
 }
 
 /* Section 2: Carousel */
 #carousel {
-    background-color: transparent; /* Ensure same background color */
+    background-color: transparent;
+    /* Ensure same background color */
 }
 
 #carousel h2 {
@@ -56,12 +65,14 @@ section {
 
 .carousel-inner img {
     max-height: 500px;
-    object-fit: cover; /* Ensures the image fits within the carousel */
+    object-fit: cover;
+    /* Ensures the image fits within the carousel */
 }
 
 /* Section 3: Animation */
 #animation {
-    background-color: transparent; /* Ensure same background color */
+    background-color: transparent;
+    /* Ensure same background color */
     text-align: center;
 }
 
@@ -72,7 +83,8 @@ section {
 
 /* Section 4: Links (Buttons) */
 #links {
-    background-color: transparent; /* Ensure same background color */
+    background-color: transparent;
+    /* Ensure same background color */
     text-align: center;
 }
 
@@ -86,12 +98,14 @@ section {
 }
 
 #links .btn:hover {
-    background-color: #C43D36; /* Darker green on hover */
+    background-color: #C43D36;
+    /* Darker green on hover */
 }
 
 /* Footer Section */
 footer {
-    background-color: #502F40; /* Dark footer for contrast */
+    background-color: #502F40;
+    /* Dark footer for contrast */
     color: #fff;
     text-align: center;
     padding: 20px 0;
@@ -108,5 +122,5 @@ footer p a {
 
 footer p a:hover {
     text-decoration: underline;
-    color:#F48075;
+    color: #F48075;
 }

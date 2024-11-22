@@ -33,7 +33,7 @@ Chatgpt for formatting
 11/20/2024: Implement CRUD for investor forum where users can input on the the website 
 Use the API already implemented from Sprint 1 -> render data with EJS with JS coding
 
-11/21/2024: 
+11/21/2024: Implement CRUD for stock and bond transaction and render data with EJS 
 
 11/22/2023: wrapping up last customization and rendering. 
 Recorded video on teams where Lily demonstrates the front end that users go through.
