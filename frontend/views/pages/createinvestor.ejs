@@ -1,9 +1,52 @@
-<body class="text-center">
-    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-        <%- include('../template/nav')-%>
-        <main role="main" class="inner cover">
-            <h1 class="cover-heading">This is a template page</h1>
-        </main>
-        <%- include('../template/footer')-%>
-    </div>
-</body>
+<%- include('../template/head')-%>
+
+    <body class="text-center">
+        <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+            <%- include('../template/nav')-%>
+                <main role="main" class="inner cover">
+                    <h1 class="cover-heading">Create Investor</h1>
+
+                    <!-- Form for creating a new investor -->
+                    <form id="createInvestorForm" class="mt-4">
+                        <div class="mb-3">
+                            <label for="firstname" class="form-label">First Name</label>
+                            <input type="text" id="firstname" class="form-control" placeholder="Enter first name"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastname" class="form-label">Last Name</label>
+                            <input type="text" id="lastname" class="form-control" placeholder="Enter last name"
+                                required>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="submitCreateInvestor()">Submit</button>
+                    </form>
+                </main>
+                <%- include('../template/footer')-%>
+        </div>
+
+        <script>
+            function submitCreateInvestor() {
+                const firstname = document.getElementById('firstname').value;
+                const lastname = document.getElementById('lastname').value;
+
+                if (!firstname || !lastname) {
+                    alert('Please fill out all fields!');
+                    return;
+                }
+
+                // Make a POST request to create a new investor
+                fetch('http://127.0.0.1:5000/api/investor', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ firstname, lastname }),
+                })
+                    .then((data) => {
+                        console.log('Response data:', data);
+                        alert(`Investor created successfully: ${firstname} ${lastname}`);
+                        window.location.href = '/investor';
+                    })
+                }
+        </script>
+    </body>

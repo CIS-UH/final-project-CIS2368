@@ -65,6 +65,9 @@ app.get('/editinvestor', (req, res) => {
     res.render('pages/editinvestor'); // Render the base template for now
 });
 
+app.get('/createinvestor', (req, res) => {
+    res.render('pages/createinvestor');
+});
 
 
 
