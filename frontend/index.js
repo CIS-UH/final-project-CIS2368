@@ -36,16 +36,14 @@ app.get('/links',function (req, res) {
 
 //LIST PAGE (UC)
 
-app.get('/list',function (req, res) {
+app.get('/investor',function (req, res) {
     //array with items to send
     var apiurl = "http://127.0.0.1:5000/api/investor/all";
-    var items = ['node.js','expressjs','ejs','javascript','bootstarmie'];
     axios.get(apiurl)
         .then((response) => {
             let investorArray = response.data.investors;
-            res.render('pages/list.ejs', {
+            res.render('pages/investor.ejs', {
                 investorArray: investorArray,
-                list:items
             });
         })
         .catch((error) => {
@@ -62,6 +60,15 @@ app.get('/list',function (req, res) {
 app.get('/portfolio', (req, res) => {
     res.render('pages/portfolio'); // Render the base template for now
 });
+
+app.get('/editinvestor', (req, res) => {
+    res.render('pages/editinvestor'); // Render the base template for now
+});
+
+
+
+
+
 
 app.post('/api/investor', (req, res) => {
     const { investorId } = req.body;

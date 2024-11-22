@@ -105,12 +105,17 @@ def update_investor():
 #Deletes investor given an investor ID
 @app.route('/api/investor', methods=['DELETE']) 
 def delete_investor():
-    request_data = request.get_json()
-    idToDelete = request_data['id']
-    query = f'''DELETE FROM investor WHERE id = {idToDelete};'''
+    try:
+        request_data = request.get_json()
+        idToDelete = request_data['id']
+        print(f"Attempting to delete investor with ID: {idToDelete}")
+        query = f'''DELETE FROM investor WHERE id = {idToDelete};'''
+        execute_query(conn, query)
+        return jsonify({"message": "Investor deleted successfully!"}), 200
+    except Exception as e:
+        print(f"Error deleting investor: {e}")
+        return jsonify({"error": "Error deleting investor"}), 500
 
-    execute_query(conn, query)
-    return 'Deleted Investor!'
 
 
 #JSON Input Example
@@ -521,7 +526,7 @@ def delete_bond_transaction():
 #show all investors
 @app.route('/api/investor/all', methods=["GET"])
 def api_all_investors():
-    select_investors = "SELECT * FROM investor"
+    select_investors = "SELECT id, firstname, lastname FROM investor"
     investors = execute_read_query(conn, select_investors)
     return jsonify({"investors": investors})
 
