@@ -532,7 +532,7 @@ def api_all_investors():
 
 @app.route('/api/stock/all', methods=["GET"])
 def api_all_stocks():
-    select_stocks = "SELECT id, firstname, lastname FROM stock"
+    select_stocks = "SELECT id, stockname, abbreviation, currentprice FROM stock"
     stocks = execute_read_query(conn, select_stocks)
     return jsonify({"stocks": stocks})
 

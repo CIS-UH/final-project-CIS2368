@@ -1,0 +1,56 @@
+<%- include('../template/head')-%>
+
+<body class="text-center">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <%- include('../template/nav')-%>
+        <main role="main" class="inner cover">
+            <h1 class="cover-heading">Create Stock</h1>
+
+            <!-- Form for creating a new stock -->
+            <form id="createStockForm" class="mt-4">
+                <div class="mb-3">
+                    <label for="stockname" class="form-label">Stock Name</label>
+                    <input type="text" id="stockname" class="form-control" placeholder="Enter stock name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="abbreviation" class="form-label">Abbreviation</label>
+                    <input type="text" id="abbreviation" class="form-control" placeholder="Enter abbreviation" required>
+                </div>
+                <div class="mb-3">
+                    <label for="currentprice" class="form-label">Current Price</label>
+                    <input type="number" id="currentprice" class="form-control" placeholder="Enter current price" required>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="submitCreateStock()">Submit</button>
+            </form>
+        </main>
+        <%- include('../template/footer')-%>
+    </div>
+
+    <script>
+        function submitCreateStock() {
+            const stockname = document.getElementById('stockname').value;
+            const abbreviation = document.getElementById('abbreviation').value;
+            const currentprice = document.getElementById('currentprice').value;
+
+            if (!stockname || !abbreviation || !currentprice) {
+                alert('Please fill out all fields!');
+                return;
+            }
+
+            // Make a POST request to create a new stock
+            fetch('http://127.0.0.1:5000/api/stock', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ stockname, abbreviation, currentprice }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log('Response data:', data);
+                    alert(`Stock created successfully: ${stockname}`);
+                    window.location.href = '/stock';
+                })
+        }
+    </script>
+</body>

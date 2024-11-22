@@ -53,7 +53,7 @@
         }
 
         fetch('/api/stock', {
-            method: 'POST',
+            method: 'post',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -90,19 +90,15 @@
                         <% if(locals.stockArray) { %>
                             <% stockArray.forEach(function(stock) { %>
                                 <option value="<%= stock.id %>">
-                                    <%= stock.firstname %>
-                                        <%= stock.lastname %>
+                                    <%= stock.abbreviation %>
+                                        <%= stock.stockname %>
+                                        <%= stock.currentprice %>
                                 </option>
                                 <% }); %>
                                     <% } %>
                     </select>
                     <p id="selectedStockId" class="mt-3"></p>
 
-                    <!-- Submit Button -->
-                    <button id="sendStockId" class="btn btn-primary mt-3" onclick="sendStockId()">View
-                        Portfolio</button>
-
-                    <!-- New Edit Button -->
                     <button id="editStock" class="btn btn-primary mt-3" onclick="redirectToEditStock()">Edit
                         Stock</button>
 
