@@ -57,6 +57,24 @@ app.get('/investor', function (req, res) {
     //})
 });
 
+app.get('/transaction', function (req, res) {
+    var apiurl = "http://127.0.0.1:5000/api/investor/all";
+    axios.get(apiurl)
+        .then((response) => {
+            let investorArray = response.data.investors;
+            let message = {};  // Define an empty message object or customize it as needed
+            res.render('pages/transaction.ejs', {
+                investorArray: investorArray,
+                message: message  // Pass message object to the template
+            });
+        })
+        .catch((error) => {
+            console.error("Error fetching investor data:", error);
+            res.status(500).send("Error fetching investor data");
+        });
+});
+
+
 app.get('/portfolio', (req, res) => {
     res.render('pages/portfolio'); // Render the base template for now
 });
@@ -156,17 +174,5 @@ function messages(req, res, next) {
     res.locals.message = message;
     next();
 }
-
-//FORM PAGE
-
-app.get('/form', messages, function (req, res) {
-    res.render('pages/form');
-});
-
-app.post('/form', function (req, res) {
-    var message = req.body;
-    res.locals.message = message;
-    res.render('pages/form');
-});
 
 app.listen(port, () => console.log(`MasterEJS app Started on port ${port}!`));
