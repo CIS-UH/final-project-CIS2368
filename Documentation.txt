@@ -29,6 +29,7 @@ Sprint 2:
 Color scheme: https://www.figma.com/color-palettes/dark/ 
 Bootstrap: https://getbootstrap.com/docs/5.3/components/navbar/#how-it-works 
 Chatgpt for formatting 
+Investing context: https://www.investopedia.com/articles/basics/11/3-s-simple-investing.asp 
 
 11/20/2024: Implement CRUD for investor forum where users can input on the the website 
 Use the API already implemented from Sprint 1 -> render data with EJS with JS coding
@@ -36,6 +37,7 @@ Use the API already implemented from Sprint 1 -> render data with EJS with JS co
 11/21/2024: Matthew worked on adjusting the Pages EJS to connect with the API and JS, 
             implemented SQL coding and continued on rendering
             Lily continue working on front end - home page 
+11/21/2024: Implement CRUD for stock and bond transaction and render data with EJS 
 
 11/22/2023: wrapping up last customization and rendering. 
 Recorded video on teams where Lily demonstrates the front end that users go through.
