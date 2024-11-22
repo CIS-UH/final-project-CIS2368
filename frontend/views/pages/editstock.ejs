@@ -1,0 +1,140 @@
+<%- include('../template/head') -%>
+
+<body class="text-center">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <%- include('../template/nav') -%>
+        <main role="main" class="inner cover">
+            <h1 class="cover-heading">Edit Stock Page</h1>
+            <p id="stock-details" style="font-weight: bold; margin-bottom: 20px;"></p>
+            <p>Edit the stock details below:</p>
+
+            <div>
+                <label for="stockname">Stock Name:</label>
+                <input type="text" id="stockname" name="stockname" />
+            </div>
+            <div>
+                <label for="abbreviation">Abbreviation:</label>
+                <input type="text" id="abbreviation" name="abbreviation" />
+            </div>
+            <div>
+                <label for="currentprice">Current Price:</label>
+                <input type="number" id="currentprice" name="currentprice" />
+            </div>
+            <div style="margin-top: 20px;">
+                <button onclick="updateStock()" class="btn btn-primary">Update Stock</button>
+                <button onclick="deleteStock()" class="btn btn-danger">Delete Stock</button>
+            </div>
+        </main>
+        <%- include('../template/footer') -%>
+    </div>
+</body>
+
+</html>
+
+<script>
+    // Retrieve selected stock ID and name from local storage
+    const stockId = localStorage.getItem('selectedStockId');
+    const stockName = localStorage.getItem('selectedStock');
+
+    // Display the stock's name on the page
+    document.addEventListener("DOMContentLoaded", () => {
+        const stockNameDisplay = document.getElementById("stock-details");
+        if (stockName) {
+            stockNameDisplay.textContent = `Editing Stock: ${stockName}`;
+        } else {
+            stockNameDisplay.textContent = "Stock details unavailable.";
+        }
+
+        // Fetch stock details from API
+        fetchStockDetails();
+    });
+
+    // Fetch stock details on page load
+    async function fetchStockDetails() {
+        try {
+            // Fetch stock by ID
+            const response = await fetch(`/api/stock/${stockId}`);
+            const stock = await response.json();
+
+            // Populate input fields with the retrieved stock details
+            document.getElementById('stockname').value = stock.stockname;
+            document.getElementById('abbreviation').value = stock.abbreviation;
+            document.getElementById('currentprice').value = stock.currentprice;
+        } catch (error) {
+            console.error("Error fetching stock details:", error);
+        }
+    }
+
+    // Handle updating a stock
+    async function updateStock() {
+        const stockname = document.getElementById('stockname').value;
+        const abbreviation = document.getElementById('abbreviation').value;
+        const currentprice = document.getElementById('currentprice').value;
+
+        if (!stockname || !abbreviation || !currentprice) {
+            alert("Please fill out all fields!");
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://127.0.0.1:5000/api/stock`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: stockId,
+                    stockname,
+                    abbreviation,
+                    currentprice,
+                }),
+            });
+
+            if (response.ok) {
+                alert(`Stock "${stockName}" has been updated to "${stockname}" with abbreviation "${abbreviation}" and price ${currentprice}.`);
+                redirectToStockPage(); // Call the redirect function
+            } else {
+                const errorText = await response.text();
+                console.error("Error response from server:", errorText);
+                alert("Error updating stock.");
+            }
+        } catch (error) {
+            console.error("Error updating stock:", error);
+            alert("Error updating stock.");
+        }
+
+        // Redirection function
+        function redirectToStockPage() {
+            window.location.href = '/stock'; // Redirect to stock listing page
+        }
+    }
+
+    // Handle deleting a stock
+    async function deleteStock() {
+        if (!confirm(`Are you sure you want to delete stock "${stockName}"?`)) {
+            return; // Cancel deletion if user declines
+        }
+
+        try {
+            const response = await fetch(`http://127.0.0.1:5000/api/stock?id=${stockId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: stockId }),
+            });
+
+            if (response.ok) {
+                alert(`Stock "${stockName}" has been deleted.`);
+                window.location.href = '/stock'; // Redirect to stock listing page
+            } else {
+                const errorText = await response.text();
+                console.error("Server responded with error:", errorText);
+                alert("Error deleting stock.");
+            }
+        } catch (error) {
+            console.error("Error deleting stock:", error);
+            alert("Error deleting stock.");
+        }
+    }
+</script>

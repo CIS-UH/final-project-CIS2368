@@ -1,0 +1,236 @@
+<%- include('../template/head')-%>
+<body class="text-center">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <%- include('../template/nav')-%>
+        <main role="main" class="inner cover">
+            <%- include('../template/messages')-%>
+            <h1 class="cover-heading mb-4">Invest Inquiry</h1>
+
+            <!-- Form Section -->
+            <form method="POST" action="/form" class="w-50 mx-auto">
+                <!-- Investor Dropdown -->
+                <div class="form-group mb-3">
+                    <label for="investorDropdown" class="form-label fw-semibold">Select Investor <span class="text-danger">*</span></label>
+                    <select id="investorDropdown" name="investorId" class="form-select" required onchange="handleInvestorSelection()">
+                        <option value="" disabled selected>Select an Investor</option>
+                        <% if(locals.investorArray) { %>
+                            <% investorArray.forEach(function(investor) { %>
+                                <option value="<%= investor.id %>">
+                                    <%= investor.firstname %> <%= investor.lastname %>
+                                </option>
+                            <% }); %>
+                        <% } %>
+                    </select>
+                    <p id="selectedInvestorId" class="mt-2 text-muted"></p>
+                </div>
+
+                <!-- Asset Type Dropdown -->
+                <div class="form-group mb-3">
+                    <label for="assetType" class="form-label fw-semibold">Asset Type</label>
+                    <select class="form-select" id="assetType" name="assetType" required onchange="loadAssetOptions()">
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="stock">Stock</option>
+                        <option value="bond">Bond</option>
+                    </select>
+                </div>
+
+                <!-- Dynamic Asset Dropdown (Stock or Bond) -->
+                <div class="form-group mb-3" id="assetDropdownContainer" style="display:none;">
+                    <label for="assetDropdown" class="form-label fw-semibold">Select Asset</label>
+                    <select id="assetDropdown" class="form-select" name="assetId" required>
+                        <option value="" disabled selected>Select an option</option>
+                    </select>
+                </div>
+
+                <!-- Transaction Type Dropdown -->
+                <div class="form-group mb-4">
+                    <label for="transactionType" class="form-label fw-semibold">Transaction Type</label>
+                    <select class="form-select" id="transactionType" name="transactionType" required onchange="handleTransactionType()">
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="buy">Buy</option>
+                        <option value="sell">Sell</option>
+                    </select>
+                </div>
+
+                <!-- Quantity Input -->
+                <div class="form-group mb-4" id="quantityContainer" style="display: none;">
+                    <label for="quantityInput" class="form-label fw-semibold">Enter Quantity</label>
+                    <input type="number" class="form-control" id="quantityInput" name="quantity" placeholder="Enter quantity" required>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary w-100 fw-bold">Submit</button>
+            </form>
+        </main>
+        <%- include('../template/footer')-%>
+    </div>
+
+    <script>
+        function loadAssetOptions() {
+    const assetType = document.getElementById('assetType').value;
+    const assetDropdownContainer = document.getElementById('assetDropdownContainer');
+    const assetDropdown = document.getElementById('assetDropdown');
+
+    // Clear existing options
+    assetDropdown.innerHTML = '<option value="" disabled selected>Select an option</option>';
+
+    if (assetType) {
+        assetDropdownContainer.style.display = 'block';
+
+        // Log the assetType to check if it's correct
+        console.log('Selected asset type:', assetType);
+
+        // Fetch relevant stock or bond based on the asset type
+        fetch(`http://127.0.0.1:5000/api/${assetType}/all`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Log the entire response to inspect the structure
+                console.log('API Response:', data);
+
+                // Updated to use plural keys ('stocks' or 'bonds') in the response
+                const assets = data[`${assetType}s`]; // Expecting 'stocks' or 'bonds'
+                if (assets && Array.isArray(assets)) {
+                    assets.forEach(asset => {
+                        const option = document.createElement('option');
+                        option.value = asset.id;
+
+                        // If it's a stock
+                        if (assetType === 'stock') {
+                            option.textContent = `${asset.abbreviation} ${asset.stockname} - $${asset.currentprice}`;
+                        }
+                        // If it's a bond
+                        else if (assetType === 'bond') {
+                            option.textContent = `${asset.abbreviation} ${asset.bondname} - $${asset.currentprice}`;
+                        }
+
+                        assetDropdown.appendChild(option);
+                    });
+                } else {
+                    console.error('No assets found or invalid format:', assets);
+                }
+            })
+            .catch(err => console.error('Error fetching assets:', err));
+    } else {
+        assetDropdownContainer.style.display = 'none';
+    }
+}
+
+
+function handleTransactionType() {
+            const transactionType = document.getElementById('transactionType').value;
+            const quantityContainer = document.getElementById('quantityContainer');
+            const quantityInput = document.getElementById('quantityInput');
+
+            if (transactionType === 'buy' || transactionType === 'sell') {
+                quantityContainer.style.display = 'block';
+
+                // Update placeholder text based on transaction type
+                quantityInput.placeholder = transactionType === 'buy' 
+                    ? 'Enter quantity to buy' 
+                    : 'Enter quantity to sell';
+            } else {
+                quantityContainer.style.display = 'none';
+                quantityInput.value = ''; // Clear the input
+            }
+        }
+
+        // Process and save the quantity value as positive/negative based on transaction type
+        document.querySelector('form').addEventListener('submit', (event) => {
+            const transactionType = document.getElementById('transactionType').value;
+            const quantityInput = document.getElementById('quantityInput');
+
+            // Ensure a quantity is entered
+            if (!quantityInput.value) {
+                alert('Please enter a quantity.');
+                event.preventDefault();
+                return;
+            }
+
+            // Convert quantity to positive or negative based on transaction type
+            const quantity = transactionType === 'buy'
+                ? Math.abs(quantityInput.value) // Positive for 'buy'
+                : -Math.abs(quantityInput.value); // Negative for 'sell'
+
+            console.log('Final Quantity:', quantity);
+
+            // Optionally, append the processed quantity value to the form data for server-side processing
+        });
+
+        document.querySelector('form').addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent default form submission
+
+    // Get form values
+    const investorId = document.getElementById('investorDropdown').value;
+    const investorName = document.getElementById('investorDropdown').selectedOptions[0].textContent.trim();
+    const assetType = document.getElementById('assetType').value;
+    const assetId = document.getElementById('assetDropdown').value;
+    const assetName = document.getElementById('assetDropdown').selectedOptions[0].textContent.split('-')[0].trim(); // Extract asset name
+    const transactionType = document.getElementById('transactionType').value;
+    const quantityInput = document.getElementById('quantityInput').value;
+
+    // Validate required fields
+    if (!investorId || !assetType || !assetId || !transactionType || !quantityInput) {
+        alert('Please fill out all required fields.');
+        return;
+    }
+
+    // Convert quantity to positive or negative based on transaction type
+    const quantity = transactionType === 'buy'
+        ? Math.abs(quantityInput)
+        : -Math.abs(quantityInput);
+
+    // Construct the JSON payload
+    const payload = {
+        id: parseInt(investorId, 10), // Investor ID
+        quantity: parseFloat(quantity), // Quantity
+    };
+
+    // Add the correct asset ID field
+    if (assetType === 'stock') {
+        payload.stock_id = parseInt(assetId, 10);
+    } else if (assetType === 'bond') {
+        payload.bond_id = parseInt(assetId, 10);
+    }
+
+    // Determine the API endpoint
+    const apiUrl = assetType === 'stock'
+        ? 'http://127.0.0.1:5000/api/transactionstock'
+        : 'http://127.0.0.1:5000/api/transactionbond';
+
+    try {
+        // Send the POST request
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Determine the transaction action (bought/sold)
+            const action = quantity > 0 ? 'bought' : 'sold';
+
+            // Show a meaningful alert
+            alert(`${investorName} ${action} ${Math.abs(quantity)} of ${assetName}`);
+        } else {
+            // Handle server-side errors
+            alert(`Error: ${data.message || 'Transaction failed'}`);
+        }
+    } catch (error) {
+        console.error('Error submitting transaction:', error);
+        alert('An error occurred while processing your transaction.');
+    }
+});
+
+    </script>
+</body>
+</html>
+

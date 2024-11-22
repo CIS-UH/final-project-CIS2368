@@ -1,11 +1,13 @@
 <%- include('../template/head') -%>
+
 <body class="text-center">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <%- include('../template/nav') -%>
         <main role="main" class="inner cover">
             <h1 class="cover-heading">Edit Investor Page</h1>
+            <p id="investor-details" style="font-weight: bold; margin-bottom: 20px;"></p>
             <p>Edit the investor details below:</p>
-            
+
             <div>
                 <label for="firstname">First Name:</label>
                 <input type="text" id="firstname" name="firstname" />
@@ -30,6 +32,19 @@
     const investorId = localStorage.getItem('selectedInvestorId');
     const investorName = localStorage.getItem('selectedInvestor');
 
+    // Display the investor's name on the page
+    document.addEventListener("DOMContentLoaded", () => {
+        const investorNameDisplay = document.getElementById("investor-details");
+        if (investorName) {
+            investorNameDisplay.textContent = `Editing Investor: ${investorName}`;
+        } else {
+            investorNameDisplay.textContent = "Investor details unavailable.";
+        }
+
+        // Fetch investor details from API
+        fetchInvestorDetails();
+    });
+
     // Fetch investor details on page load
     async function fetchInvestorDetails() {
         try {
@@ -45,69 +60,71 @@
         }
     }
 
-    document.addEventListener("DOMContentLoaded", fetchInvestorDetails);
-
     // Handle updating an investor
     async function updateInvestor() {
-    const firstname = document.getElementById('firstname').value;
-    const lastname = document.getElementById('lastname').value;
+        const firstname = document.getElementById('firstname').value;
+        const lastname = document.getElementById('lastname').value;
 
-    try {
-        const response = await fetch('http://127.0.0.1:5000/api/investor', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: investorId, // Add id to the body
-                firstname: firstname,
-                lastname: lastname,
-            }),
-        });
+        try {
+            const response = await fetch('http://127.0.0.1:5000/api/investor', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: investorId,
+                    firstname: firstname,
+                    lastname: lastname,
+                }),
+            });
 
-        if (response.ok) {
-            alert(`Investor "${investorName}" has been updated to "${firstname} ${lastname}".`);
-        } else {
-            const errorText = await response.text();
-            console.error("Error response from server:", errorText);
+            if (response.ok) {
+                alert(`Investor "${investorName}" has been updated to "${firstname} ${lastname}".`);
+                redirectToInvestorPage(); // Redirect to the investor listing or details page
+            } else {
+                const errorText = await response.text();
+                console.error("Error response from server:", errorText);
+                alert("Error updating investor.");
+            }
+        } catch (error) {
+            console.error("Error updating investor:", error);
             alert("Error updating investor.");
         }
-    } catch (error) {
-        console.error("Error updating investor:", error);
-        alert("Error updating investor.");
-    }
-}
 
+        // Redirection function
+        function redirectToInvestorPage() {
+            window.location.href = '/investor'; // Replace '/investor' with the correct route
+        }
+    }
 
     // Handle deleting an investor
     async function deleteInvestor() {
-    if (!confirm(`Are you sure you want to delete investor "${investorName}"?`)) {
-        return; // Cancel deletion if user declines
-    }
+        if (!confirm(`Are you sure you want to delete investor "${investorName}"?`)) {
+            return; // Cancel deletion if user declines
+        }
 
-    try {
-        const response = await fetch('http://127.0.0.1:5000/api/investor?id='+investorId, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id: investorId }),
-        });
+        try {
+            const response = await fetch('http://127.0.0.1:5000/api/investor?id=' + investorId, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: investorId }),
+            });
 
-        if (response.ok) {
-            const result = await response.json();
-            alert(`Investor "${investorName}" has been deleted.`);
-            // Optionally redirect to another page after deletion
-            window.location.href = '/investor'; // Change to your actual redirect route
-        } else {
-            const errorText = await response.text();
-            console.error("Server responded with error:", errorText);
+            if (response.ok) {
+                const result = await response.json();
+                alert(`Investor "${investorName}" has been deleted.`);
+                // Optionally redirect to another page after deletion
+                window.location.href = '/investor'; // Change to your actual redirect route
+            } else {
+                const errorText = await response.text();
+                console.error("Server responded with error:", errorText);
+                alert("Error deleting investor.");
+            }
+        } catch (error) {
+            console.error("Error deleting investor:", error);
             alert("Error deleting investor.");
         }
-    } catch (error) {
-        console.error("Error deleting investor:", error);
-        alert("Error deleting investor.");
     }
-}
-
 </script>

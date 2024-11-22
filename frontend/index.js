@@ -14,29 +14,29 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-app.get('/',function (req, res) {
+app.get('/', function (req, res) {
     res.render('pages/home')
 });
 
 //LINKS PAGE
 
-app.get('/links',function (req, res) {
+app.get('/links', function (req, res) {
     //array with items to send
     var items = [
-        {name:'node.js',url:'https://nodejs.org/en/'},
-        {name:'ejs',url:'https://ejs.co'},
-        {name:'expressjs',url:'https://expressjs.com'},
-        {name:'vuejs',url:'https://vuejs.org'},
-        {name:'nextjs',url:'https://nextjs.org'}];
+        { name: 'node.js', url: 'https://nodejs.org/en/' },
+        { name: 'ejs', url: 'https://ejs.co' },
+        { name: 'expressjs', url: 'https://expressjs.com' },
+        { name: 'vuejs', url: 'https://vuejs.org' },
+        { name: 'nextjs', url: 'https://nextjs.org' }];
 
-    res.render('pages/links',{
-        links:items
+    res.render('pages/links', {
+        links: items
     })
 });
 
 //LIST PAGE (UC)
 
-app.get('/investor',function (req, res) {
+app.get('/investor', function (req, res) {
     //array with items to send
     var apiurl = "http://127.0.0.1:5000/api/investor/all";
     axios.get(apiurl)
@@ -50,12 +50,30 @@ app.get('/investor',function (req, res) {
             console.error("Error fetching investor data:", error);
             res.status(500).send("Error fetching investor data"); // More specific error
         });
-        
-   // var items = ['node.js','expressjs','ejs','javascript','bootstarmie'];
+
+    // var items = ['node.js','expressjs','ejs','javascript','bootstarmie'];
     //res.render('pages/list',{
-     //   list:items
+    //   list:items
     //})
 });
+
+app.get('/transaction', function (req, res) {
+    var apiurl = "http://127.0.0.1:5000/api/investor/all";
+    axios.get(apiurl)
+        .then((response) => {
+            let investorArray = response.data.investors;
+            let message = {};  // Define an empty message object or customize it as needed
+            res.render('pages/transaction.ejs', {
+                investorArray: investorArray,
+                message: message  // Pass message object to the template
+            });
+        })
+        .catch((error) => {
+            console.error("Error fetching investor data:", error);
+            res.status(500).send("Error fetching investor data");
+        });
+});
+
 
 app.get('/portfolio', (req, res) => {
     res.render('pages/portfolio'); // Render the base template for now
@@ -84,37 +102,77 @@ app.post('/api/investor', (req, res) => {
 
 //TABLE PAGE
 
-app.get('/table',function (req, res) {
+app.get('/stock', function (req, res) {
     //array with items to send
-    var items = [
-        {name:'node.js',url:'https://nodejs.org/en/'},
-        {name:'ejs',url:'https://ejs.co'},
-        {name:'expressjs',url:'https://expressjs.com'},
-        {name:'vuejs',url:'https://vuejs.org'},
-        {name:'nextjs',url:'https://nextjs.org'}];
+    var apiurl = "http://127.0.0.1:5000/api/stock/all";
+    axios.get(apiurl)
+        .then((response) => {
+            let stockArray = response.data.stocks;
+            res.render('pages/stock.ejs', {
+                stockArray: stockArray,
+            });
+        })
+        .catch((error) => {
+            console.error("Error fetching investor data:", error);
+            res.status(500).send("Error fetching investor data"); // More specific error
+        });
+});
 
-    res.render('pages/table',{
-        table:items
-    })
+app.post('/api/stock', (req, res) => {
+    const { stockId } = req.body;
+    if (!stockId) {
+        return res.status(400).json({ message: 'stock ID is required' });
+    }
+    console.log(`Received stock ID: ${stockId}`);
+    res.json({ message: `stock ID ${stockId} processed successfully!` });
+});
+
+app.get('/editstock', (req, res) => {
+    res.render('pages/editstock'); // Render the base template for now
+});
+
+app.get('/createstock', (req, res) => {
+    res.render('pages/createstock');
+});
+
+app.get('/bonds', function (req, res) {
+    //array with items to send
+    var apiurl = "http://127.0.0.1:5000/api/bond/all";
+    axios.get(apiurl)
+        .then((response) => {
+            let bondArray = response.data.bonds;
+            res.render('pages/bonds.ejs', {
+                bondArray: bondArray,
+            });
+        })
+        .catch((error) => {
+            console.error("Error fetching investor data:", error);
+            res.status(500).send("Error fetching investor data"); // More specific error
+        });
+});
+
+app.post('/api/bond', (req, res) => {
+    const { bondId } = req.body;
+    if (!bondId) {
+        return res.status(400).json({ message: 'bond ID is required' });
+    }
+    console.log(`Received bond ID: ${bondId}`);
+    res.json({ message: `bond ID ${bondId} processed successfully!` });
+});
+
+app.get('/editbond', (req, res) => {
+    res.render('pages/editbond'); // Render the base template for now
+});
+
+app.get('/createbond', (req, res) => {
+    res.render('pages/createbond');
 });
 
 //our alert message midleware
-function messages(req,res,next){
+function messages(req, res, next) {
     var message;
     res.locals.message = message;
     next();
 }
-
-//FORM PAGE
-
-app.get('/form',messages,function (req, res) {
-    res.render('pages/form');
-});
-
-app.post('/form',function (req, res) {
-    var message=req.body;
-    res.locals.message = message;
-    res.render('pages/form');
-});
 
 app.listen(port, () => console.log(`MasterEJS app Started on port ${port}!`));
