@@ -42,16 +42,18 @@ body {
   max-width: 42em;
 }
 
-
 /*
  * Header
  */
 .masthead {
   margin-bottom: 2rem;
+  text-align: center;
+  font-size: larger;
 }
 
 .masthead-brand {
-  margin-bottom: 0;
+  margin-bottom: 35px;
+  margin-left: 190px;
 }
 
 .nav-masthead .nav-link {
@@ -64,11 +66,12 @@ body {
 
 .nav-masthead .nav-link:hover,
 .nav-masthead .nav-link:focus {
-  border-bottom-color: rgba(255, 255, 255, .25);
+  border-bottom-color: #fff;
 }
 
 .nav-masthead .nav-link + .nav-link {
   margin-left: 1rem;
+  margin-left: 40px;
 }
 
 .nav-masthead .active {
